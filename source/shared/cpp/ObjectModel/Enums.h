@@ -425,7 +425,6 @@ namespace AdaptiveCards
     enum class ErrorStatusCode
     {
         InvalidJson = 0,
-        RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
@@ -437,22 +436,13 @@ namespace AdaptiveCards
     enum class WarningStatusCode
     {
         UnknownElementType = 0,
-        UnknownActionElementType,
-        UnknownPropertyOnElement,
-        UnknownEnumValue,
-        NoRendererForType,
-        InteractivityNotSupported,
-        MaxActionsExceeded,
-        AssetLoadFailed,
         UnsupportedSchemaVersion,
-        UnsupportedMediaType,
         InvalidMediaMix,
+        CustomWarning,
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
         InvalidValue,
-        CustomWarning,
-        EmptyLabelInRequiredInput,
         RequiredPropertyMissing,
     };
     // No mapping to string needed

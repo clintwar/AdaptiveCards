@@ -471,6 +471,8 @@ namespace AdaptiveCards::Rendering::Uwp
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveMediaRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveRichTextBlockRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
+                                           Make<AdaptiveCards::Rendering::Uwp::AdaptiveTableRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlockRenderer>().Get()));
 

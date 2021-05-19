@@ -613,15 +613,9 @@ namespace AdaptiveCards
                 Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
             };
 
-            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainerBase, IAdaptiveCardElement
+            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
             {
                 AdaptiveTableCell();
-
-                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
-                AdaptiveBackgroundImage BackgroundImage;
-                Windows.Foundation.IReference<Boolean> Rtl;
-
-                Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
             }
 
             runtimeclass AdaptiveTableRow : IAdaptiveCardElement

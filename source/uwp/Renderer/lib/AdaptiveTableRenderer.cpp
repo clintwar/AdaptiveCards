@@ -27,8 +27,8 @@ namespace AdaptiveCards::Rendering::Uwp
     CATCH_RETURN;
 
     HRESULT AdaptiveTableRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                          _In_ IAdaptiveRenderContext* /*renderContext*/,
-                                          _In_ IAdaptiveRenderArgs* /*renderArgs*/,
+                                          _In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
                                           _COM_Outptr_ IUIElement** tableControl) noexcept
     try
     {
@@ -80,25 +80,41 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(row->get_Cells(&cells));
 
             UINT cellNumber = 0;
-            IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* /*cell*/) {
-                HString cellString;
-                cellString.Set(L"I am pretending to be a cell");
+            IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* cell) {
+                ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
+                renderContext->get_ElementRenderers(&rendererRegistration);
 
-                ComPtr<ITextBlock> xamlTextBlock =
-                    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+                ComPtr<IAdaptiveElementRenderer> containerRenderer;
+                HString containerTypeString;
+                containerTypeString.Set(L"Container");
+                rendererRegistration->Get(containerTypeString.Get(), &containerRenderer);
 
-                xamlTextBlock->put_Text(cellString.Get());
+                ComPtr<IAdaptiveTableCell> tableCell(cell);
+                ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
+                tableCell.As(&tableCellAsCardElement);
 
-                ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
-                xamlTextBlock.As(&textBlockAsFrameworkElement);
+                // Render the cell as a container
+                ComPtr<IUIElement>renderedCell;
+                containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &renderedCell);
 
-                gridStatics->SetColumn(textBlockAsFrameworkElement.Get(), cellNumber);
-                gridStatics->SetRow(textBlockAsFrameworkElement.Get(), rowNumber);
+                //HString cellString;
+                //cellString.Set(L"I am pretending to be a cell");
+
+                //ComPtr<ITextBlock> xamlTextBlock =
+                //    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+
+                //xamlTextBlock->put_Text(cellString.Get());
+
+                ComPtr<IFrameworkElement> renderedCellAsFrameworkElement;
+                renderedCell.As(&renderedCellAsFrameworkElement);
+
+                gridStatics->SetColumn(renderedCellAsFrameworkElement.Get(), cellNumber);
+                gridStatics->SetRow(renderedCellAsFrameworkElement.Get(), rowNumber);
 
                 ComPtr<IPanel> xamlGridAsPanel;
                 xamlGrid.As(&xamlGridAsPanel);
 
-                XamlHelpers::AppendXamlElementToPanel(xamlTextBlock.Get(), xamlGridAsPanel.Get());
+                XamlHelpers::AppendXamlElementToPanel(renderedCellAsFrameworkElement.Get(), xamlGridAsPanel.Get());
 
                 cellNumber++;
                 return S_OK;

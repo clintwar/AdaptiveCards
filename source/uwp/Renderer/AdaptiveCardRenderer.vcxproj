@@ -149,6 +149,7 @@
     <ClCompile Include="lib\AdaptiveTable.cpp" />
     <ClCompile Include="lib\AdaptiveTableCell.cpp" />
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="lib\AdaptiveTable.h" />
     <ClInclude Include="lib\AdaptiveTableCell.h" />
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableRenderer.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />

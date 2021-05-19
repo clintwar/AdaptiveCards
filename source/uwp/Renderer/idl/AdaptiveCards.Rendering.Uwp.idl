@@ -1365,6 +1365,11 @@ namespace AdaptiveCards
                 AdaptiveToggleVisibilityActionRenderer();
             };
 
+            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+            {
+                AdaptiveTableRenderer();
+            };
+
             runtimeclass AdaptiveError
             {
                 AdaptiveError(ErrorStatusCode statusCode, String message);

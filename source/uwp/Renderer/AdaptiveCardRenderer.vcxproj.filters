@@ -133,6 +133,7 @@
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTable.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -273,6 +274,7 @@
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveTable.h" />
+    <ClInclude Include="lib\AdaptiveTableRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

@@ -10,7 +10,7 @@ using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition() {}
+    AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition() : m_width{}, m_pixelWidth{} {}
 
     HRESULT AdaptiveTableColumnDefinition::RuntimeClassInitialize() noexcept
     try
@@ -46,12 +46,20 @@ namespace AdaptiveCards::Rendering::Uwp
         if (sharedWidth)
         {
             m_width = winrt::box_value(sharedWidth.value()).as<ABI::Windows::Foundation::IReference<UINT32>>().get();
+
+            UINT32 testValue;
+            m_width->get_Value(&testValue);
+            testValue++;
         }
 
         const auto sharedPixelWidth = sharedTableColumnDefinition->GetPixelWidth();
         if (sharedPixelWidth)
         {
             m_pixelWidth = winrt::box_value(sharedPixelWidth.value()).as<ABI::Windows::Foundation::IReference<UINT32>>().get();
+
+            UINT32 testValue;
+            m_pixelWidth->get_Value(&testValue);
+            testValue++;
         }
 
         return S_OK;
@@ -86,6 +94,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveTableColumnDefinition::get_Width(ABI::Windows::Foundation::IReference<UINT32>** width)
     {
+        UINT32 testValue;
+        m_width->get_Value(&testValue);
+        testValue++;
+
         m_width.CopyTo(width);
         return S_OK;
     }
@@ -98,6 +110,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveTableColumnDefinition::get_PixelWidth(ABI::Windows::Foundation::IReference<UINT32>** pixelWidth)
     {
+        UINT32 testValue;
+        m_width->get_Value(&testValue);
+        testValue++;
+
         m_pixelWidth.CopyTo(pixelWidth);
         return S_OK;
     }

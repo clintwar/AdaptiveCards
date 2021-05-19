@@ -564,14 +564,17 @@ namespace AdaptiveCards
                 UInt32 MinHeight;
             };
 
-            runtimeclass AdaptiveContainer : IAdaptiveContainerBase, IAdaptiveCardElement
+            interface IAdaptiveContainer
             {
-                AdaptiveContainer();
-
                 Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
+            };
+
+            [default_interface] runtimeclass AdaptiveContainer : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+            {
+                AdaptiveContainer();
             };
 
             runtimeclass AdaptiveColumn : IAdaptiveContainerBase, IAdaptiveCardElement

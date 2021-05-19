@@ -5,13 +5,17 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveTable.h"
 #include "AdaptiveTableRenderer.h"
+#include "util.h"
+#include "XamlHelpers.h"
 
+using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace Microsoft::WRL;
+using namespace Windows::Foundation;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
@@ -22,24 +26,92 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTableRenderer::Render(_In_ IAdaptiveCardElement* /*adaptiveCardElement*/,
+    HRESULT AdaptiveTableRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                           _In_ IAdaptiveRenderContext* /*renderContext*/,
                                           _In_ IAdaptiveRenderArgs* /*renderArgs*/,
                                           _COM_Outptr_ IUIElement** tableControl) noexcept
     try
     {
-        ComPtr<ITextBlock> xamlTextBlock =
-            XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveTable> adaptiveTable;
+        RETURN_IF_FAILED(cardElement.As(&adaptiveTable));
 
-        HString tableString;
-        tableString.Set(L"I am pretending to be a table");
+        // Create a grid to represent the table
+        ComPtr<IGrid> xamlGrid =
+            XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IGridStatics> gridStatics;
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
-        xamlTextBlock->put_Text(tableString.Get());
+        // Create the column definitions
+        ComPtr<IVector<AdaptiveTableColumnDefinition*>> columns;
+        RETURN_IF_FAILED(adaptiveTable->get_Columns(&columns));
 
-        ComPtr<IUIElement> textBlockAsUIElement;
-        xamlTextBlock.As(&textBlockAsUIElement);
+        ComPtr<IVector<ColumnDefinition*>> xamlColumnDefinitions;
+        RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&xamlColumnDefinitions));
 
-        return textBlockAsUIElement.CopyTo(tableControl);
+        IterateOverVectorWithFailure<AdaptiveTableColumnDefinition, IAdaptiveTableColumnDefinition>(
+            columns.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableColumnDefinition* column) {
+                ComPtr<IColumnDefinition> xamlColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
+                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+
+                RETURN_IF_FAILED(HandleTableColumnWidth(column, xamlColumnDefinition.Get()));
+
+                RETURN_IF_FAILED(xamlColumnDefinitions->Append(xamlColumnDefinition.Get()));
+
+                return S_OK;
+            });
+
+        // Create the rows
+        ComPtr<IVector<AdaptiveTableRow*>> rows;
+        RETURN_IF_FAILED(adaptiveTable->get_Rows(&rows));
+
+        ComPtr<IVector<RowDefinition*>> xamlRowDefinitions;
+        RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&xamlRowDefinitions));
+
+        UINT rowNumber = 0;
+        IterateOverVectorWithFailure<AdaptiveTableRow, IAdaptiveTableRow>(rows.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableRow* row) {
+            ComPtr<IRowDefinition> xamlRowDefinition = XamlHelpers::CreateXamlClass<IRowDefinition>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
+
+            RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
+
+            // Create the cells
+            ComPtr<IVector<AdaptiveTableCell*>> cells;
+            RETURN_IF_FAILED(row->get_Cells(&cells));
+
+            UINT cellNumber = 0;
+            IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* /*cell*/) {
+                HString cellString;
+                cellString.Set(L"I am pretending to be a cell");
+
+                ComPtr<ITextBlock> xamlTextBlock =
+                    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+
+                xamlTextBlock->put_Text(cellString.Get());
+
+                ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
+                xamlTextBlock.As(&textBlockAsFrameworkElement);
+
+                gridStatics->SetColumn(textBlockAsFrameworkElement.Get(), cellNumber);
+                gridStatics->SetRow(textBlockAsFrameworkElement.Get(), rowNumber);
+
+                ComPtr<IPanel> xamlGridAsPanel;
+                xamlGrid.As(&xamlGridAsPanel);
+
+                XamlHelpers::AppendXamlElementToPanel(xamlTextBlock.Get(), xamlGridAsPanel.Get());
+
+                cellNumber++;
+                return S_OK;
+            });
+
+            rowNumber++;
+            return S_OK;
+        });
+
+        ComPtr<IUIElement> xamlGridAsUIElement;
+        xamlGrid.As(&xamlGridAsUIElement);
+
+        return xamlGridAsUIElement.CopyTo(tableControl);
     }
     CATCH_RETURN;
 

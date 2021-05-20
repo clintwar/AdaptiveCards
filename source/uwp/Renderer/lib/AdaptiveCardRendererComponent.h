@@ -30,7 +30,7 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
-        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
+        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                           _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result);
 
         IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
@@ -52,7 +52,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     private:
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                 _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** adaptiveCard);
+                                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult** adaptiveCard);
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);

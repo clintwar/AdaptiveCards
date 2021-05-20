@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveRichTextBlock.h"
 #include "AdaptiveRichTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -181,19 +180,6 @@ namespace AdaptiveCards::Rendering::Uwp
         });
 
         return xamlRichTextBlock.CopyTo(result);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveRichTextBlockRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveRichTextBlock, AdaptiveCards::RichTextBlock, AdaptiveCards::RichTextBlockParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

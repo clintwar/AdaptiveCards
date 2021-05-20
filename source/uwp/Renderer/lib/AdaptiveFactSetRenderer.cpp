@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveFactSet.h"
 #include "AdaptiveFactSetRenderer.h"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -55,9 +54,9 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
         GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
-        ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType;
         RETURN_IF_FAILED(cardElement->get_Height(&heightType));
-        if (heightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Stretch)
+        if (heightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
         {
             factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
         }
@@ -165,19 +164,6 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", factSetAsFrameworkElement.Get()));
 
         return xamlGrid.CopyTo(factSetControl);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveFactSetRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveFactSet, AdaptiveCards::FactSet, AdaptiveCards::FactSetParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

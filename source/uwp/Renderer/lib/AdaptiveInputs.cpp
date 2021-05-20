@@ -2,16 +2,13 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
-#include "AdaptiveActionElement.h"
 #include "AdaptiveRenderArgs.h"
-#include "AdaptiveCard.h"
-#include "AdaptiveSubmitAction.h"
-#include "AdaptiveInputElement.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Data::Json;
@@ -36,8 +33,9 @@ namespace AdaptiveCards::Rendering::Uwp
 
         ComPtr<IAdaptiveCard> parentCard;
         RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
-        ComPtr<AdaptiveCard> parentCardImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(parentCard);
-        InternalId cardId = parentCardImpl->GetInternalId();
+        //BECKYTODO
+        //ComPtr<AdaptiveCard> parentCardImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(parentCard);
+        InternalId cardId; // = parentCardImpl->GetInternalId();
 
         ComPtr<IAdaptiveInputElement> inputElement;
         RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
@@ -56,20 +54,23 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
+    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase> actionImpl =
-            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>(localAction);
-        InternalId actionId = actionImpl->GetInternalId();
+
+        //BECKYTODO
+        //ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase> actionImpl =
+        //    PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>(localAction);
+        InternalId actionId; // = actionImpl->GetInternalId();
 
         ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
         ComPtr<IAdaptiveCard> adaptiveCard;
         RETURN_IF_FAILED(localRenderArgs->get_ParentCard(adaptiveCard.GetAddressOf()));
 
-        ComPtr<AdaptiveCard> adaptiveCardImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(adaptiveCard);
-        InternalId cardId = adaptiveCardImpl->GetInternalId();
+        //BECKYTODO
+        //ComPtr<AdaptiveCard> adaptiveCardImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(adaptiveCard);
+        InternalId cardId; //= adaptiveCardImpl->GetInternalId();
 
         m_containerCardForAction[actionId.Hash()] = cardId.Hash();
         return S_OK;
@@ -198,9 +199,11 @@ namespace AdaptiveCards::Rendering::Uwp
                                              _Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputsToValidate)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase> actionImpl =
-            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>(localAction);
-        InternalId actionId = actionImpl->GetInternalId();
+        //BECKYTODO
+        //ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase> actionImpl =
+        //    PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>(localAction);
+        InternalId actionId;
+//        = actionImpl->GetInternalId();
 
         std::size_t card = m_containerCardForAction[actionId.Hash()];
         while (card != InternalId().Hash())

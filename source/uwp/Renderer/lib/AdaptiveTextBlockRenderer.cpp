@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveTextBlock.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -46,7 +45,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (text.Get() == nullptr)
         {
             *textBlockControl = nullptr;
-            renderContext->AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RequiredPropertyMissing,
+            renderContext->AddError(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode::RequiredPropertyMissing,
                                     HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
             return S_OK;
         }
@@ -76,10 +75,10 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
 
         // If this text block has a heading style, set the corresponding automation property
-        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle textStyle;
         RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyle));
 
-        if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::Heading)
         {
             ComPtr<IDependencyObject> textBlockAsDependencyObject;
             RETURN_IF_FAILED(xamlTextBlock.As(&textBlockAsDependencyObject));
@@ -100,19 +99,6 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         return xamlTextBlock.CopyTo(textBlockControl);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveTextBlockRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlock, AdaptiveCards::TextBlock, AdaptiveCards::TextBlockParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 

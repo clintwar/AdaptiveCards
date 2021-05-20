@@ -3,7 +3,6 @@
 #include "pch.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
 #include "LinkButton.h"
@@ -11,6 +10,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -83,7 +83,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     void ArrangeButtonContent(_In_ IAdaptiveActionElement* action,
                               _In_ IAdaptiveActionsConfig* actionsConfig,
                               _In_ IAdaptiveRenderContext* renderContext,
-                              ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+                              ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                               bool allActionsHaveIcons,
                               _In_ IButton* button)
@@ -136,7 +136,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
-            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center));
+            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Center));
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -189,7 +189,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
                 // Only add spacing when the icon must be located at the left of the title
                 UINT spacingSize;
-                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
+                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Default, &spacingSize));
 
                 ABI::Windows::UI::Color color = {0};
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
@@ -371,7 +371,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             }
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         boolean allowAboveTitleIconPlacement;
@@ -423,12 +423,12 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
+            ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
-            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ShowCard)
             {
-                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::UnsupportedValue,
+                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::UnsupportedValue,
                                                           HStringReference(warning.c_str()).Get()));
                 return true;
             }
@@ -479,7 +479,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
-        ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -492,8 +492,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit) ||
-            (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::Execute))
+        if ((actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Submit) ||
+            (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Execute))
         {
             THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
@@ -528,7 +528,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
         UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Default, &spacingSize));
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
@@ -705,7 +705,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
         if (adaptiveCardElement != nullptr)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
+            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing elementSpacing;
             THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
@@ -814,7 +814,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         {
             if (selectAction != nullptr)
             {
-                renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                                           HStringReference(L"SelectAction present, but Interactivity is not supported").Get());
             }
 
@@ -838,7 +838,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
+            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing;
             RETURN_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
@@ -856,7 +856,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return S_OK;
     }
 
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
+    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
                                  _In_ IAdaptiveRenderContext* renderContext,
@@ -984,17 +984,17 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                     RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
                     if (!renderer)
                     {
-                        ABI::AdaptiveCards::Rendering::Uwp::FallbackType actionFallbackType;
+                        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType actionFallbackType;
                         action->get_FallbackType(&actionFallbackType);
                         switch (actionFallbackType)
                         {
-                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Drop:
+                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Drop:
                         {
                             RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
                             return S_OK;
                         }
 
-                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content:
+                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content:
                         {
                             ComPtr<IAdaptiveActionElement> actionFallback;
                             RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
@@ -1009,7 +1009,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                             break;
                         }
 
-                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None:
+                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None:
                         default:
                             return E_FAIL;
                         }
@@ -1021,11 +1021,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
                 XamlHelpers::AppendXamlElementToPanel(actionControl.Get(), actionsPanel.Get());
 
-                ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
+                ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
                 RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
                 // Build inline show cards if needed
-                if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_ShowCard)
+                if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ShowCard)
                 {
                     ComPtr<IUIElement> uiShowCard;
 
@@ -1081,7 +1081,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             }
             else
             {
-                renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::MaxActionsExceeded,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
                                           HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
                                               .Get());
             }
@@ -1110,15 +1110,15 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return actionSetAsPanel.CopyTo(actionSetControl);
     }
 
-    void CreateAppropriateButton(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action, ComPtr<IButton>& button)
+    void CreateAppropriateButton(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action, ComPtr<IButton>& button)
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
+            ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
             // construct an appropriate button for the action type
-            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_OpenUrl)
             {
                 // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
                 auto linkButton = winrt::make<LinkButton>();

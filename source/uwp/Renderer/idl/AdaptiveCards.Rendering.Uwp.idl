@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include <sdkddkver.h>
 
+
 import "inspectable.idl";
 import "Windows.Foundation.idl";
 import "Windows.UI.Xaml.idl";
@@ -41,14 +42,14 @@ namespace AdaptiveCards
             declare
             {
                 //BECKYTODO
-                //interface Windows.Foundation.Collections.IVector<AdaptiveCards.Rendering.Uwp.IAdaptiveCardElement*>;
-                //interface Windows.Foundation.Collections.IVector<AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement*>;
+                //interface Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement*>;
+                //interface Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveColumn*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveFact*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveChoiceInput*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveError*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveWarning*>;
-                //interface Windows.Foundation.Collections.IObservableVector<AdaptiveCards.Rendering.Uwp.IAdaptiveCardElement*>;
+                //interface Windows.Foundation.Collections.IObservableVector<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement*>;
                 //interface Windows.Foundation.Collections.IObservableVector<AdaptiveColumn*>;
                 //interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
                 //interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
@@ -71,7 +72,7 @@ namespace AdaptiveCards
                 void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
                 void ResetFixedDimensions();
 
-                RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCards.Rendering.Uwp.AdaptiveCard adaptiveCard);
+                RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard adaptiveCard);
                 RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(String adaptiveCard);
                 RenderedAdaptiveCard RenderAdaptiveCardFromJson(Windows.Data.Json.JsonObject adaptiveCard);
 
@@ -81,13 +82,13 @@ namespace AdaptiveCards
 
             runtimeclass AdaptiveActionEventArgs
             {
-                AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement Action { get; };
+                AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement Action { get; };
                 AdaptiveInputs Inputs { get; };
             }
 
             runtimeclass AdaptiveMediaEventArgs
             {
-                AdaptiveCards.Rendering.Uwp.AdaptiveMedia Media { get; };
+                AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia Media { get; };
             }
 
             runtimeclass AdaptiveContainerStyleDefinition
@@ -181,9 +182,9 @@ namespace AdaptiveCards
             {
                 AdaptiveTextConfig();
 
-                AdaptiveCards.Rendering.Uwp.TextWeight Weight;
-                AdaptiveCards.Rendering.Uwp.TextSize Size;
-                AdaptiveCards.Rendering.Uwp.ForegroundColor Color;
+                AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
+                AdaptiveCards.ObjectModel.Uwp.TextSize Size;
+                AdaptiveCards.ObjectModel.Uwp.ForegroundColor Color;
                 Boolean IsSubtle;
                 Boolean Wrap;
                 UInt32 MaxWidth;
@@ -222,7 +223,7 @@ namespace AdaptiveCards
             {
                 AdaptiveImageSetConfig();
 
-                AdaptiveCards.Rendering.Uwp.ImageSize ImageSize;
+                AdaptiveCards.ObjectModel.Uwp.ImageSize ImageSize;
                 UInt32 MaxImageHeight;
             };
 
@@ -230,7 +231,7 @@ namespace AdaptiveCards
             {
                 AdaptiveImageConfig();
 
-                AdaptiveCards.Rendering.Uwp.ImageSize ImageSize;
+                AdaptiveCards.ObjectModel.Uwp.ImageSize ImageSize;
             };
 
             runtimeclass AdaptiveCardConfig
@@ -254,7 +255,7 @@ namespace AdaptiveCards
                 AdaptiveShowCardActionConfig();
 
                 ActionMode ActionMode;
-                AdaptiveCards.Rendering.Uwp.ContainerStyle Style;
+                AdaptiveCards.ObjectModel.Uwp.ContainerStyle Style;
                 UInt32 InlineTopMargin;
             };
 
@@ -267,7 +268,7 @@ namespace AdaptiveCards
                 ActionAlignment ActionAlignment;
                 UInt32 ButtonSpacing;
                 UInt32 MaxActions;
-                AdaptiveCards.Rendering.Uwp.Spacing Spacing;
+                AdaptiveCards.ObjectModel.Uwp.Spacing Spacing;
                 IconPlacement IconPlacement;
                 UInt32 IconSize;
             };
@@ -285,18 +286,18 @@ namespace AdaptiveCards
             {
                 AdaptiveInputLabelConfig();
 
-                AdaptiveCards.Rendering.Uwp.ForegroundColor Color;
+                AdaptiveCards.ObjectModel.Uwp.ForegroundColor Color;
                 Boolean IsSubtle;
-                AdaptiveCards.Rendering.Uwp.TextSize Size;
+                AdaptiveCards.ObjectModel.Uwp.TextSize Size;
                 String Suffix;
-                AdaptiveCards.Rendering.Uwp.TextWeight Weight;
+                AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
             };
 
             runtimeclass AdaptiveLabelConfig
             {
                 AdaptiveLabelConfig();
 
-                AdaptiveCards.Rendering.Uwp.Spacing InputSpacing;
+                AdaptiveCards.ObjectModel.Uwp.Spacing InputSpacing;
 
                 AdaptiveInputLabelConfig RequiredInputs;
                 AdaptiveInputLabelConfig OptionalInputs;
@@ -306,9 +307,9 @@ namespace AdaptiveCards
             {
                 AdaptiveErrorMessageConfig();
 
-                AdaptiveCards.Rendering.Uwp.TextSize Size;
-                AdaptiveCards.Rendering.Uwp.Spacing Spacing;
-                AdaptiveCards.Rendering.Uwp.TextWeight Weight;
+                AdaptiveCards.ObjectModel.Uwp.TextSize Size;
+                AdaptiveCards.ObjectModel.Uwp.Spacing Spacing;
+                AdaptiveCards.ObjectModel.Uwp.TextWeight Weight;
             };
 
             runtimeclass AdaptiveInputsConfig
@@ -358,7 +359,7 @@ namespace AdaptiveCards
                 AdaptiveHostConfigParseResult();
 
                 AdaptiveHostConfig HostConfig { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.AdaptiveError> Errors { get; };
             };
 
             runtimeclass AdaptiveCardResourceResolvers
@@ -389,12 +390,12 @@ namespace AdaptiveCards
             {
                 RenderedAdaptiveCard();
 
-                AdaptiveCards.Rendering.Uwp.AdaptiveCard OriginatingCard { get; };
+                AdaptiveCards.ObjectModel.Uwp.AdaptiveCard OriginatingCard { get; };
                 AdaptiveHostConfig OriginatingHostConfig { get; };
                 Windows.UI.Xaml.FrameworkElement FrameworkElement { get; };
                 AdaptiveInputs UserInputs { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.AdaptiveError> Errors { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning> Warnings { get; };
 
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
@@ -407,7 +408,7 @@ namespace AdaptiveCards
                 Windows.Data.Json.JsonObject AsJson();
                 Windows.Foundation.Collections.ValueSet AsValueSet();
 
-                Boolean ValidateInputs(AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement submitAction);
+                Boolean ValidateInputs(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement submitAction);
             };
 
             runtimeclass AdaptiveFeatureRegistration
@@ -439,31 +440,31 @@ namespace AdaptiveCards
             {
                 AdaptiveActionInvoker();
 
-                void SendActionEvent(AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement actionElement);
+                void SendActionEvent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement actionElement);
             };
 
             runtimeclass AdaptiveMediaEventInvoker
             {
                 AdaptiveMediaEventInvoker();
 
-                void SendMediaClickedEvent(AdaptiveCards.Rendering.Uwp.AdaptiveMedia mediaElement);
+                void SendMediaClickedEvent(AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia mediaElement);
             };
 
             runtimeclass AdaptiveRenderArgs
             {
                 AdaptiveRenderArgs();
 
-                AdaptiveCards.Rendering.Uwp.ContainerStyle ContainerStyle;
+                AdaptiveCards.ObjectModel.Uwp.ContainerStyle ContainerStyle;
                 IInspectable ParentElement;
                 Boolean IsInShowCard;
                 Boolean AllowAboveTitleIconPlacement;
                 Boolean AncestorHasFallback;
-                AdaptiveCards.Rendering.Uwp.AdaptiveCard ParentCard;
+                AdaptiveCards.ObjectModel.Uwp.AdaptiveCard ParentCard;
             };
 
             interface IAdaptiveInputValue
             {
-                IAdaptiveInputElement InputElement { get; };
+                AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement InputElement { get; };
                 String CurrentValue { get; };
                 Windows.UI.Xaml.UIElement ErrorMessage
                 {
@@ -490,30 +491,30 @@ namespace AdaptiveCards
                 Windows.Foundation.IReference<Boolean> Rtl;
 
                 void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
-                void LinkSubmitActionToCard(AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement submitAction,
+                void LinkSubmitActionToCard(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement submitAction,
                                             AdaptiveRenderArgs renderArgs);
-                void LinkCardToParent(AdaptiveCards.Rendering.Uwp.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
-                IAdaptiveInputValue GetInputValue(IAdaptiveInputElement inputElement);
+                void LinkCardToParent(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
+                IAdaptiveInputValue GetInputValue(AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement inputElement);
 
-                void AddInlineShowCard(AdaptiveCards.Rendering.Uwp.AdaptiveActionSet actionSet,
-                                       AdaptiveCards.Rendering.Uwp.AdaptiveShowCardAction showCardAction,
+                void AddInlineShowCard(AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet actionSet,
+                                       AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction showCardAction,
                                        Windows.UI.Xaml.UIElement showCardUIElement,
                                        AdaptiveRenderArgs renderArgs);
 
-                void AddError(ErrorStatusCode statusCode, String message);
-                void AddWarning(WarningStatusCode statusCode, String message);
+                void AddError(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode statusCode, String message);
+                void AddWarning(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode statusCode, String message);
             };
 
             interface IAdaptiveElementRenderer
             {
-                Windows.UI.Xaml.UIElement Render(AdaptiveCards.Rendering.Uwp.IAdaptiveCardElement element,
+                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             };
 
             interface IAdaptiveActionRenderer
             {
-                Windows.UI.Xaml.UIElement Render(AdaptiveCards.Rendering.Uwp.IAdaptiveActionElement element,
+                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             };
@@ -632,7 +633,7 @@ namespace AdaptiveCards
             {
                 TileControl();
 
-                AdaptiveCards.Rendering.Uwp.AdaptiveBackgroundImage BackgroundImage;
+                AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage BackgroundImage;
                 Windows.UI.Xaml.FrameworkElement RootElement;
                 Windows.UI.Xaml.UIElement ResolvedImage;
                 Windows.Foundation.Size ImageSize;

@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
 
-#include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveActionSetRenderer.h"
@@ -39,6 +38,7 @@ using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -166,7 +166,7 @@ namespace AdaptiveCards::Rendering::Uwp
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -215,10 +215,10 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                                   _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult)
+                                                                   _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult** parseResult)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
+        RETURN_IF_FAILED(MakeAndInitialize<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
         return adaptiveCardStatics->FromJsonString(adaptiveJson, parseResult);
     }
 
@@ -306,16 +306,16 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         ABI::Windows::UI::Color accentColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor_Accent,
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Accent,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &accentColor));
 
         ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor_Attention,
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Attention,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &attentionColor));

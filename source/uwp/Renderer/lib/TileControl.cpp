@@ -3,7 +3,6 @@
 #include "pch.h"
 
 #include <cmath>
-#include "AdaptiveBackgroundImage.h"
 #include "TileControl.h"
 #include "XamlHelpers.h"
 

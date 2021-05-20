@@ -3,12 +3,12 @@
 #include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveCards::Rendering::Uwp;
@@ -51,7 +51,8 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
     }
 
     ComPtr<IAdaptiveImage> adaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&adaptiveImage));
+    //BECKYTODO
+    /*THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&adaptiveImage));*/
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
     HString altText;
@@ -103,7 +104,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
 
     // Outline it in the Dark color
-    ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
     THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ComPtr<IColorsStatics> colorsStatics;
@@ -145,7 +146,8 @@ void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _I
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&playIconAdaptiveImage));
+    //BECKYTODO
+    //THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&playIconAdaptiveImage));
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;

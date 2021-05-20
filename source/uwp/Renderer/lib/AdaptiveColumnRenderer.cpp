@@ -5,13 +5,12 @@
 #include "AdaptiveColumnRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveColumn.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -73,7 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(
             XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -96,7 +95,7 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment;
+        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment;
         RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
@@ -134,7 +133,7 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
 
             // get HeightType for column
-            ABI::AdaptiveCards::Rendering::Uwp::HeightType columnHeightType{};
+            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
             // Add columnBorder to rootElement
@@ -160,19 +159,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                           false,
                                           ColumnControl);
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveColumnRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveColumn, AdaptiveCards::Column, AdaptiveCards::ColumnParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

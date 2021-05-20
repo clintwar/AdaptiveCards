@@ -7,7 +7,6 @@
 #include "ActionHelpers.h"
 #include "ElementTagContent.h"
 #include "TileControl.h"
-#include "AdaptiveImage.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -150,16 +149,16 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                     _In_ IBorder* containerBorder,
                                     _In_ IAdaptiveRenderContext* renderContext,
                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* containerStyle)
+                                    _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* containerStyle)
     {
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle localContainerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle localContainerStyle;
         RETURN_IF_FAILED(adaptiveContainer->get_Style(&localContainerStyle));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle parentContainerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle parentContainerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
         bool hasExplicitContainerStyle{true};
-        if (localContainerStyle == ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
+        if (localContainerStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             localContainerStyle = parentContainerStyle;
@@ -193,32 +192,32 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
         // container to bleed
-        ABI::AdaptiveCards::Rendering::Uwp::BleedDirection bleedDirection;
+        ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection bleedDirection;
         RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
 
         Thickness marginThickness = {0};
-        if (bleedDirection != ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+        if (bleedDirection != ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
         {
-            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Left) !=
-                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Left) !=
+                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Right) !=
-                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Right) !=
+                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Up) !=
-                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Up) !=
+                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Down) !=
-                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::Down) !=
+                ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
@@ -327,7 +326,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         ComPtr<IImage> xamlImage;
         THROW_IF_FAILED(background.As(&xamlImage));
 
-        ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode fillMode;
+        ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode fillMode;
         THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
         // Creates the background image for all fill modes
@@ -380,7 +379,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
-        ABI::AdaptiveCards::Rendering::Uwp::FallbackType elementFallback;
+        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType elementFallback;
         RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
 
         HString elementType;
@@ -390,7 +389,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         ComPtr<IUIElement> fallbackControl;
         switch (elementFallback)
         {
-        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content:
         {
             // We have content, get the type of the fallback element
             ComPtr<IAdaptiveCardElement> fallbackElement;
@@ -431,14 +430,14 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Drop:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Drop:
         {
             // If the fallback is drop, nothing to do but warn
             RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None:
         default:
         {
             break;
@@ -462,7 +461,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 // standard unknown element handling
                 std::wstring errorString = L"No Renderer found for type: ";
                 errorString += elementType.GetRawBuffer(nullptr);
-                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
+                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
                                                            HStringReference(errorString.c_str()).Get()));
                 return S_OK;
             }
@@ -480,7 +479,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                        _Out_ ABI::Windows::UI::Color* separatorColor,
                                        _Out_ bool* needsSeparator)
     {
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
+        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing elementSpacing;
         THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));
 
         UINT localSpacing;
@@ -500,7 +499,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
         }
 
-        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::Rendering::Uwp::Spacing::None);
+        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::None);
 
         *spacing = localSpacing;
         *separatorThickness = localThickness;
@@ -536,7 +535,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
 
-            ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType{};
+            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
 
             ComPtr<ElementTagContent> tagContent;
@@ -663,12 +662,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                          _In_ boolean isHint,
                                          ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
-        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor textColor;
 
         // If we're formatting a hint then use attention color
         if (isHint)
         {
-            textColor = ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Attention;
+            textColor = ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Attention;
         }
         else
         {
@@ -685,11 +684,11 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
 
-        ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize;
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 
@@ -729,7 +728,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return S_OK;
     }
 
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* /*renderArgs*/,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
@@ -808,7 +807,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         {
             // if there was no label but the input is required file a warning for the card author
             RETURN_IF_FAILED(renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::EmptyLabelInRequiredInput,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::EmptyLabelInRequiredInput,
                 HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
@@ -831,29 +830,29 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
         // Set size defined in host config
-        ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize;
         RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
         RETURN_IF_FAILED(
-            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textSize, &resultSize));
+            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
 
         // Set weight defined in host config
-        ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight;
         RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
 
         ABI::Windows::UI::Text::FontWeight resultWeight;
         RETURN_IF_FAILED(
-            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textWeight, &resultWeight));
+            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::FontType_Default, textWeight, &resultWeight));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
 
         return S_OK;
     }
 
-    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                     _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
     {
@@ -946,7 +945,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             ComPtr<IAdaptiveLabelConfig> labelConfig;
             RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
 
-            ABI::AdaptiveCards::Rendering::Uwp::Spacing labelSpacing;
+            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing labelSpacing;
             RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
 
             UINT spacing{};
@@ -1018,7 +1017,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
             RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
-            ABI::AdaptiveCards::Rendering::Uwp::Spacing errorSpacing;
+            ABI::AdaptiveCards::ObjectModel::Uwp::Spacing errorSpacing;
             RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
 
             UINT spacing{};
@@ -1097,7 +1096,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             if (!errorMessage.IsValid())
             {
                 RETURN_IF_FAILED(
-                    renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::MissingValidationErrorMessage,
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MissingValidationErrorMessage,
                                               HStringReference(L"Inputs with validation should include an errorMessage").Get()));
             }
         }

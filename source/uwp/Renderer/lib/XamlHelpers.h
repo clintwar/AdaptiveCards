@@ -96,7 +96,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
     HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
 
-    HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColumn* column,
+    HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn* column,
                               boolean isVisible,
                               _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
 
@@ -183,7 +183,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     template<typename T>
     void AppendXamlElementToPanel(_In_ T* xamlElement,
                                   _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-                                  ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType = ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType = ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Auto)
     {
         if (!xamlElement)
         {
@@ -200,7 +200,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
 
-        if (heightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Stretch)
+        if (heightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
         {
             ComPtr<IPanel> spPanel(panel);
             ComPtr<IWholeItemsPanel> wholeItemsPanel;
@@ -295,16 +295,16 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         XamlHelpers::AppendXamlElementToPanel(item, localPanel.Get());
     }
 
-    HRESULT HandleStylingAndPadding(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerBase* adaptiveContainer,
+    HRESULT HandleStylingAndPadding(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainerBase* adaptiveContainer,
                                     _In_ ABI::Windows::UI::Xaml::Controls::IBorder* containerBorder,
                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* containerStyle);
+                                    _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* containerStyle);
 
     bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
 
     template<typename T>
-    void SetVerticalContentAlignmentToChildren(_In_ T* container, _In_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment)
+    void SetVerticalContentAlignmentToChildren(_In_ T* container, _In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
     {
         ComPtr<T> localContainer(container);
         ComPtr<IWholeItemsPanel> containerAsPanel;
@@ -314,12 +314,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
 
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl);
 
-    HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+    HRESULT RenderInputErrorMessage(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                     ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);
 
@@ -327,12 +327,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                    ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
 
-    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInput,
+    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInput,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                        _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
 
-    HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInput,
+    HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInput,
                                            ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
                                            boolean hasTypeSpecificValidation,
                                            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
@@ -340,7 +340,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
     template<typename TXamlControl>
-    HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+    HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                    _In_ TXamlControl* xamlControl)
@@ -361,24 +361,24 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage* backgroundImage,
+                               _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImage,
                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
     HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
-                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                               _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
                                _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
                                _In_ ABI::Windows::UI::Xaml::IUIElement* separator,
                                _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition,
                                std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
 
-    HRESULT RenderFallback(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* currentElement,
+    HRESULT RenderFallback(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* currentElement,
                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
-                           _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** renderedElement);
+                           _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** renderedElement);
 
-    void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+    void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                                        _Out_ UINT* spacing,
                                        _Out_ UINT* separatorThickness,
@@ -391,7 +391,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         HString warningMsg;
         RETURN_IF_FAILED(UTF8ToHString(warning, warningMsg.GetAddressOf()));
 
-        RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::PerformingFallback,
+        RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::PerformingFallback,
                                                    warningMsg.Get()));
         return S_OK;
     }
@@ -424,7 +424,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
     CATCH_RETURN;
 
     void AddSeparatorIfNeeded(int& currentElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                              _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* element,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,

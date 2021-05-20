@@ -174,7 +174,6 @@
     <ClInclude Include="lib\AdaptiveCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
-    <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
     <ClInclude Include="lib\AdaptiveExecuteActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
@@ -183,7 +182,6 @@
     <ClInclude Include="lib\AdaptiveHeadingsConfig.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
-    <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveDateInputRenderer.h" />
@@ -195,7 +193,6 @@
     <ClInclude Include="lib\AdaptiveImageRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
-    <ClInclude Include="lib\AdaptiveInputElement.h" />
     <ClInclude Include="lib\AdaptiveInputLabelConfig.h" />
     <ClInclude Include="lib\AdaptiveLabelConfig.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
@@ -216,7 +213,6 @@
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
@@ -284,9 +280,7 @@
     <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveCardResourceResolvers.cpp" />
-    <ClCompile Include="lib\AdaptiveError.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfigParseResult.cpp" />
-    <ClCompile Include="lib\AdaptiveCardParseResult.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveDateInputRenderer.cpp" />
@@ -298,7 +292,6 @@
     <ClCompile Include="lib\AdaptiveImageRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveInputElement.cpp" />
     <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
@@ -307,7 +300,6 @@
     <ClCompile Include="lib\AdaptiveTextInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTimeInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInputRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveWarning.cpp" />
     <ClCompile Include="lib\CustomActionWrapper.cpp" />
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
@@ -349,7 +341,7 @@
            the problem, DisableReferences is enabled to disable /reference. -->
       <DisableReferences>true</DisableReferences>
       <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl;..\AdaptiveCardsObjectModel</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(WindowsSDK_IncludePath);..\AdaptiveCardsObjectModel\idl</AdditionalIncludeDirectories>

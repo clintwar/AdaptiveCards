@@ -10,7 +10,7 @@ namespace AdaptiveCards::Rendering::Uwp
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement);
+        CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;
@@ -25,12 +25,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** cardElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** cardElement);
 
     private:
         std::string GetCardElementId() const;
         void SetCardElementId(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> m_cardElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> m_cardElement;
     };
 }

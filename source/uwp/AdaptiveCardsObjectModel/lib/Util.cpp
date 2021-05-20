@@ -16,7 +16,6 @@
 #include "AdaptiveExecuteAction.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
-#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveMedia.h"
@@ -1037,20 +1036,20 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::Elemen
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
-                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
-                          _Out_ bool* meetsRequirements)
-{
-    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedElement;
-    RETURN_IF_FAILED(GenerateSharedElement(cardElement, sharedElement));
-
-    ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
-    const std::shared_ptr<AdaptiveCards::FeatureRegistration>& sharedFeatureRegistration =
-        featureRegistrationImpl->GetSharedFeatureRegistration();
-
-    *meetsRequirements = sharedElement->MeetsRequirements(*sharedFeatureRegistration);
-    return S_OK;
-}
+//HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
+//                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
+//                          _Out_ bool* meetsRequirements)
+//{
+//    std::shared_ptr<AdaptiveCards::BaseCardElement> sharedElement;
+//    RETURN_IF_FAILED(GenerateSharedElement(cardElement, sharedElement));
+//
+//    ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+//    const std::shared_ptr<AdaptiveCards::FeatureRegistration>& sharedFeatureRegistration =
+//        featureRegistrationImpl->GetSharedFeatureRegistration();
+//
+//    *meetsRequirements = sharedElement->MeetsRequirements(*sharedFeatureRegistration);
+//    return S_OK;
+//}
 
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage* backgroundImageElement,
                                _Out_ BOOL* isValid)

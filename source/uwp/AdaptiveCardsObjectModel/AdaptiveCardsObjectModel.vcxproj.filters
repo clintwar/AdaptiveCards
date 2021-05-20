@@ -65,7 +65,6 @@
     <ClCompile Include="lib\AdaptiveRichTextBlockParser.cpp" />
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
     <ClCompile Include="lib\AdaptiveTextElement.cpp" />
-    <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
@@ -141,7 +140,6 @@
     <ClInclude Include="lib\AdaptiveRichTextBlockParser.h" />
     <ClInclude Include="lib\AdaptiveTextRun.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />
-    <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveRequirement.h" />
     <ClInclude Include="lib\AdaptiveExecuteAction.h" />
     <ClInclude Include="lib\AdaptiveExecuteActionParser.h" />

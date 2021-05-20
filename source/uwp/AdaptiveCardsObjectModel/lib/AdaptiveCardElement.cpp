@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardElement.h"
-#include "AdaptiveFeatureRegistration.h"
 #include "SemanticVersion.h"
 #include "Util.h"
 #include "Vector.h"

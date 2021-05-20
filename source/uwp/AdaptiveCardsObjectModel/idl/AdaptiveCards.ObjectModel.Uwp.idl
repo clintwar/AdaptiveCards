@@ -148,25 +148,36 @@ namespace AdaptiveCards
                 Monospace,
             } FontType;
 
+            // BECKYTODO
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ErrorStatusCode {
-                InvalidJson = 0,
-                RequiredPropertyMissing,
-                InvalidPropertyValue,
-                UnsupportedParserOverride,
-                IdCollision,
+                 InvalidJson = 0,
+                 RenderFailed,
+                 RequiredPropertyMissing,
+                 InvalidPropertyValue,
+                 UnsupportedParserOverride,
                 CustomError,
             } ErrorStatusCode;
 
+            // BECKYTODO
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum WarningStatusCode {
-                UnknownElementType = 0,
-                UnsupportedSchemaVersion,
-                InvalidMediaMix,
+                 UnknownElementType = 0,
+                 UnknownActionElementType,
+                 UnknownPropertyOnElement,
+                 UnknownEnumValue,
+                 NoRendererForType,
+                 InteractivityNotSupported,
+                 MaxActionsExceeded,
+                 AssetLoadFailed,
+                 UnsupportedSchemaVersion,
+                 UnsupportedMediaType,
+                 InvalidMediaMix,
+                 InvalidValue,
+                 UnsupportedValue,
+                PerformingFallback,
                 CustomWarning,
-                InvalidColorFormat,
-                InvalidDimensionSpecified,
-                InvalidLanguage,
-                InvalidValue,
-                RequiredPropertyMissing,
+                 EmptyLabelInRequiredInput,
+                 MissingValidationErrorMessage,
+                 RequiredPropertyMissing,
             } WarningStatusCode;
 
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum VerticalContentAlignment {

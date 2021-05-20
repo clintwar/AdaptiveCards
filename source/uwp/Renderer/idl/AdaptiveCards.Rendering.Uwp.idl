@@ -33,38 +33,6 @@ namespace AdaptiveCards
                 Popup,
             } ActionMode;
 
-            // BECKYTODO
-            [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ErrorStatusCode {
-                // InvalidJson = 0,
-                // RenderFailed,
-                // RequiredPropertyMissing,
-                // InvalidPropertyValue,
-                // UnsupportedParserOverride,
-                CustomError,
-            } ErrorStatusCode;
-
-            // BECKYTODO
-            [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum WarningStatusCode {
-                // UnknownElementType = 0,
-                // UnknownActionElementType,
-                // UnknownPropertyOnElement,
-                // UnknownEnumValue,
-                // NoRendererForType,
-                // InteractivityNotSupported,
-                // MaxActionsExceeded,
-                // AssetLoadFailed,
-                // UnsupportedSchemaVersion,
-                // UnsupportedMediaType,
-                // InvalidMediaMix,
-                // InvalidValue,
-                // UnsupportedValue,
-                PerformingFallback,
-                CustomWarning,
-                // EmptyLabelInRequiredInput,
-                // MissingValidationErrorMessage,
-                // RequiredPropertyMissing,
-            } WarningStatusCode;
-
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum IconPlacement {
                 AboveTitle = 0,
                 LeftOfTitle,
@@ -658,22 +626,6 @@ namespace AdaptiveCards
             [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveToggleVisibilityActionRenderer();
-            };
-
-            runtimeclass AdaptiveError
-            {
-                AdaptiveError(ErrorStatusCode statusCode, String message);
-
-                ErrorStatusCode StatusCode;
-                String Message;
-            };
-
-            runtimeclass AdaptiveWarning
-            {
-                AdaptiveWarning(WarningStatusCode statusCode, String message);
-
-                WarningStatusCode StatusCode;
-                String Message;
             };
 
             runtimeclass TileControl

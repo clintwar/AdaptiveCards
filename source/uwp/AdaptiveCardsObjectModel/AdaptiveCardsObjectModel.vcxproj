@@ -156,7 +156,6 @@
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveExecuteAction.h" />
     <ClInclude Include="lib\AdaptiveExecuteActionParser.h" />
-    <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveDateInputParser.h" />
@@ -216,7 +215,6 @@
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
-    <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>

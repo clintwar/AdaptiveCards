@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -16,37 +16,37 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveTextElement::put_Text(_In_ HSTRING text) { return m_text.Set(text); }
 
-    HRESULT AdaptiveTextElement::get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
+    HRESULT AdaptiveTextElement::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
+    HRESULT AdaptiveTextElement::put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Weight(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
+    HRESULT AdaptiveTextElement::get_Weight(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
+    HRESULT AdaptiveTextElement::put_Weight(ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextElement::get_Color(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor* foregroundColor)
     {
         *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextElement::put_Color(ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
@@ -68,13 +68,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    HRESULT AdaptiveTextElement::get_FontType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FontType* fontType)
+    HRESULT AdaptiveTextElement::get_FontType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FontType* fontType)
     {
         *fontType = m_fontType;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_FontType(ABI::AdaptiveCards::Rendering::Uwp::FontType fontType)
+    HRESULT AdaptiveTextElement::put_FontType(ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType)
     {
         m_fontType = fontType;
         return S_OK;

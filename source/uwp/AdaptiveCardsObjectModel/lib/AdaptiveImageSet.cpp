@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -31,7 +31,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize>(sharedImageSet->GetImageSize());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
@@ -43,13 +43,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return m_images.CopyTo(images);
     }
 
-    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

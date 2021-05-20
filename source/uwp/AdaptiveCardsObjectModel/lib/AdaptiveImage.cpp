@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -33,12 +33,12 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetBackgroundColor(), m_backgroundColor.GetAddressOf()));
 
-        m_imageStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageStyle>(sharedImage->GetImageStyle());
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImage->GetImageSize());
+        m_imageStyle = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle>(sharedImage->GetImageStyle());
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
         m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
@@ -61,25 +61,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return m_backgroundColor.Set(backgroundColor);
     }
 
-    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
@@ -113,13 +113,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;

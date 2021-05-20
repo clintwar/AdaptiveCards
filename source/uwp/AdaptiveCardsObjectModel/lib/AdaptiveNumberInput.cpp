@@ -6,7 +6,7 @@
 
 #include <winrt/Windows.Foundation.h>
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {

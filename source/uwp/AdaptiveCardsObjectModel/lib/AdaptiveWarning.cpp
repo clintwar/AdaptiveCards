@@ -5,13 +5,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
     HRESULT AdaptiveWarning::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode,
+    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode,
                                                     _In_ HSTRING message)
     {
         m_statusCode = statusCode;
@@ -19,13 +19,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode* value)
+    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode value)
+    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode value)
     {
         m_statusCode = value;
         return S_OK;

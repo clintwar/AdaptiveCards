@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -40,7 +40,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         m_wrap = sharedChoiceSetInput->GetWrap();
         m_choiceSetStyle =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
@@ -80,13 +80,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;

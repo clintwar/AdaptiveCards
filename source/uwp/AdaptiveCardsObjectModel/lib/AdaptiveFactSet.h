@@ -8,8 +8,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("3aacc7c9-f600-4928-ae06-4cc21a83f4b3") AdaptiveFactSet
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFactSet,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFactSet,
+                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::Uwp::AdaptiveCardElementBase>>
     {
@@ -23,25 +23,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         // IAdaptiveFactSet
         IFACEMETHODIMP get_Facts(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>** facts);
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*>** facts);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing)
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing)
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HeightType* height)
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HeightType* height)
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::Rendering::Uwp::HeightType height)
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::Uwp::HeightType height)
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
@@ -61,21 +61,21 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback)
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback)
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** content)
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** content)
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback)
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback)
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* content)
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* content)
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -95,7 +95,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement*>** requirements)
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>** requirements)
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -111,7 +111,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>> m_facts;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*>> m_facts;
     };
 
     ActivatableClass(AdaptiveFactSet);

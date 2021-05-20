@@ -4,7 +4,7 @@
 #include "AdaptiveMedia.h"
 #include "Vector.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp

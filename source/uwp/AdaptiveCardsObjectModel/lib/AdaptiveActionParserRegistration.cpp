@@ -14,7 +14,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -89,7 +89,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveActionParserRegistration::RegisterDefaultActionParsers(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* registration)
+    HRESULT AdaptiveActionParserRegistration::RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
                                            Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveOpenUrlActionParser>().Get()));

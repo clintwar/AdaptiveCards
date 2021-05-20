@@ -6,7 +6,7 @@
 #include "AdaptiveShowCardAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
@@ -37,20 +37,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ShowCard;
         return S_OK;
     }
 

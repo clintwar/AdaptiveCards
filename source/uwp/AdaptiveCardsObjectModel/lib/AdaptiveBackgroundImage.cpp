@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -35,10 +35,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
             RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
         }
 
-        m_fillMode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode>(sharedImage->GetFillMode());
+        m_fillMode = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode>(sharedImage->GetFillMode());
         m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::VAlignment>(sharedImage->GetVerticalAlignment());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment>(sharedImage->GetVerticalAlignment());
 
         return S_OK;
     }
@@ -48,37 +48,37 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveBackgroundImage::put_Url(_In_ HSTRING url) { return m_url.Set(url); }
 
-    HRESULT AdaptiveBackgroundImage::get_FillMode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode* fillMode)
+    HRESULT AdaptiveBackgroundImage::get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode* fillMode)
     {
         *fillMode = m_fillMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_FillMode(ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode fillMode)
+    HRESULT AdaptiveBackgroundImage::put_FillMode(ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode fillMode)
     {
         m_fillMode = fillMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* HorizontalAlignment)
+    HRESULT AdaptiveBackgroundImage::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* HorizontalAlignment)
     {
         *HorizontalAlignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment HorizontalAlignment)
+    HRESULT AdaptiveBackgroundImage::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment HorizontalAlignment)
     {
         m_horizontalAlignment = HorizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::get_VerticalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VAlignment* VerticalAlignment)
+    HRESULT AdaptiveBackgroundImage::get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment* VerticalAlignment)
     {
         *VerticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_VerticalAlignment(ABI::AdaptiveCards::Rendering::Uwp::VAlignment VerticalAlignment)
+    HRESULT AdaptiveBackgroundImage::put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment VerticalAlignment)
     {
         m_verticalAlignment = VerticalAlignment;
         return S_OK;

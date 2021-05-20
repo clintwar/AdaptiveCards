@@ -8,7 +8,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class AdaptiveRequirement
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement>,
                                               Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveRequirement);
@@ -31,11 +31,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
     };
 
     class AdaptiveRequirementFactory
-        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirementFactory>
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirementFactory>
     {
         IFACEMETHODIMP CreateInstance(_In_ HSTRING name,
                                       _In_ HSTRING version,
-                                      _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement** result) override
+                                      _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement** result) override
         {
             return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveRequirement>(result, name, version);
         }

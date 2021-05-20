@@ -9,7 +9,7 @@ import "Windows.Data.Json.idl";
 
 namespace AdaptiveCards
 {
-    namespace Rendering
+    namespace ObjectModel
     {
         namespace Uwp
         {

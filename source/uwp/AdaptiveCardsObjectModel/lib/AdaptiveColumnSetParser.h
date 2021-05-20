@@ -8,7 +8,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class AdaptiveColumnSetParser
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParser>
+                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser>
     {
         AdaptiveRuntime(AdaptiveColumnSetParser);
 
@@ -17,10 +17,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         IFACEMETHODIMP FromJson(
             _In_ ABI::Windows::Data::Json::IJsonObject*,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept override;
+            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParsers,
+            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParsers,
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept override;
     };
 
     ActivatableClass(AdaptiveColumnSetParser);

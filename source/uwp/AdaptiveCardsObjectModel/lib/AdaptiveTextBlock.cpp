@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -31,8 +31,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
         m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>(sharedTextBlock->GetStyle());
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -64,25 +64,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextStyle* style)
+    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveCards::Rendering::Uwp::TextStyle style)
+    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle style)
     {
         m_style = style;
         return S_OK;

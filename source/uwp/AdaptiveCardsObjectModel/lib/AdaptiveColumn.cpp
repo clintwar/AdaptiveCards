@@ -10,12 +10,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    AdaptiveColumn::AdaptiveColumn() : m_bleedDirection(ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
+    AdaptiveColumn::AdaptiveColumn() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
@@ -34,11 +34,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedColumn->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(
             sharedColumn->GetVerticalContentAlignment());
         m_bleed = sharedColumn->GetBleed();
-        m_bleedDirection = static_cast<ABI::AdaptiveCards::Rendering::Uwp::BleedDirection>(sharedColumn->GetBleedDirection());
+        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection>(sharedColumn->GetBleedDirection());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
@@ -75,25 +75,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth) { return m_pixelWidth = pixelWidth; }
 
-    HRESULT AdaptiveColumn::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveColumn::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveColumn::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
@@ -161,7 +161,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::get_BleedDirection(ABI::AdaptiveCards::Rendering::Uwp::BleedDirection* bleedDirection)
+    HRESULT AdaptiveColumn::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection* bleedDirection)
     {
         // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
         // the shared model logic.

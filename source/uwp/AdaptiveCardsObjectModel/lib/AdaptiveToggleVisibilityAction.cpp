@@ -5,7 +5,7 @@
 #include "AdaptiveToggleVisibilityAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -36,9 +36,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::ToggleVisibility;
+        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ToggleVisibility;
         return S_OK;
     }
 

@@ -9,8 +9,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveOpenUrlAction,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
+                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveOpenUrlAction,
+                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::Uwp::AdaptiveActionElementBase>>
     {
@@ -25,7 +25,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url) override;
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType) override;
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType) override;
         IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value) override
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
@@ -40,22 +40,22 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveActionElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveActionElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback) override
         {
             return AdaptiveActionElementBase::get_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** content) override
         {
             return AdaptiveActionElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback) override
         {
             return AdaptiveActionElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* content) override
         {
             return AdaptiveActionElementBase::put_FallbackContent(content);
         }

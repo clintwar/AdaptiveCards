@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -52,9 +52,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::OpenUrl;
         return S_OK;
     }
 

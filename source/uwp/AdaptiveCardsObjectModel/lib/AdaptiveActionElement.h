@@ -20,10 +20,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback);
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback);
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** content);
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* content);
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback);
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** content);
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* content);
 
         IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl);
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl);
@@ -56,7 +56,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         Microsoft::WRL::Wrappers::HString m_typeString;
         boolean m_isEnabled;
         InternalId m_internalId;
-        ABI::AdaptiveCards::Rendering::Uwp::FallbackType m_fallbackType;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_fallbackContent;
+        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType m_fallbackType;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_fallbackContent;
     };
 }

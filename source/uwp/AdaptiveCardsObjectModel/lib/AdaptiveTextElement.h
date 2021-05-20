@@ -10,14 +10,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_Text(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize);
-        IFACEMETHODIMP put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize);
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* textSize);
+        IFACEMETHODIMP put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize);
 
-        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight);
-        IFACEMETHODIMP put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight);
+        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* textWeight);
+        IFACEMETHODIMP put_Weight(ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight);
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor);
-        IFACEMETHODIMP put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor* textColor);
+        IFACEMETHODIMP put_Color(ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor textColor);
 
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(boolean isSubtle);
@@ -25,8 +25,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FontType* fontType);
-        IFACEMETHODIMP put_FontType(ABI::AdaptiveCards::Rendering::Uwp::FontType fontType);
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FontType* fontType);
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType);
 
         IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
         IFACEMETHODIMP put_Underline(_In_ boolean underline);
@@ -35,10 +35,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
             m_subtle = sharedModel->GetIsSubtle();
-            m_fontType = static_cast<ABI::AdaptiveCards::Rendering::Uwp::FontType>(sharedModel->GetFontType());
-            m_textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(sharedModel->GetTextSize());
-            m_textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(sharedModel->GetTextWeight());
-            m_foregroundColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(sharedModel->GetTextColor());
+            m_fontType = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>(sharedModel->GetFontType());
+            m_textSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>(sharedModel->GetTextSize());
+            m_textWeight = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>(sharedModel->GetTextWeight());
+            m_foregroundColor = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>(sharedModel->GetTextColor());
 
             RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetText(), m_text.GetAddressOf()));
             RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetLanguage(), m_language.GetAddressOf()));
@@ -70,9 +70,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
         boolean m_subtle;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
-        ABI::AdaptiveCards::Rendering::Uwp::FontType m_fontType;
-        ABI::AdaptiveCards::Rendering::Uwp::TextSize m_textSize;
-        ABI::AdaptiveCards::Rendering::Uwp::TextWeight m_textWeight;
-        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor m_foregroundColor;
+        ABI::AdaptiveCards::ObjectModel::Uwp::FontType m_fontType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize m_textSize;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight m_textWeight;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor m_foregroundColor;
     };
 }

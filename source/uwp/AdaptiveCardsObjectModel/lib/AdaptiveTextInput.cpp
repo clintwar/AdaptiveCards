@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -33,7 +33,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
         m_textInputStyle =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
         GenerateActionProjection(sharedTextInput->GetInlineAction(), &m_inlineAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
@@ -77,13 +77,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle* textInputStyle)
+    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle* textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
+    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;

@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::Uwp
@@ -31,7 +31,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
 
         m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
+            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
 
         GenerateInlinesProjection(sharedRichTextBlock->GetInlines(), m_inlines.Get());
 
@@ -40,20 +40,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
     }
 
     HRESULT AdaptiveRichTextBlock::get_Inlines(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>** inlines)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>** inlines)
     {
         return m_inlines.CopyTo(inlines);
     }

@@ -86,33 +86,25 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 ComPtr<IAdaptiveElementRenderer> containerRenderer;
                 HString containerTypeString;
-                containerTypeString.Set(L"Container");
-                rendererRegistration->Get(containerTypeString.Get(), &containerRenderer);
+                RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
+                RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));
 
                 ComPtr<IAdaptiveTableCell> tableCell(cell);
                 ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
-                tableCell.As(&tableCellAsCardElement);
+                RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));
 
                 // Render the cell as a container
-                ComPtr<IUIElement>renderedCell;
-                containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &renderedCell);
-
-                //HString cellString;
-                //cellString.Set(L"I am pretending to be a cell");
-
-                //ComPtr<ITextBlock> xamlTextBlock =
-                //    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-
-                //xamlTextBlock->put_Text(cellString.Get());
+                ComPtr<IUIElement> renderedCell;
+                RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &renderedCell));
 
                 ComPtr<IFrameworkElement> renderedCellAsFrameworkElement;
-                renderedCell.As(&renderedCellAsFrameworkElement);
+                RETURN_IF_FAILED(renderedCell.As(&renderedCellAsFrameworkElement));
 
-                gridStatics->SetColumn(renderedCellAsFrameworkElement.Get(), cellNumber);
-                gridStatics->SetRow(renderedCellAsFrameworkElement.Get(), rowNumber);
+                RETURN_IF_FAILED(gridStatics->SetColumn(renderedCellAsFrameworkElement.Get(), cellNumber));
+                RETURN_IF_FAILED(gridStatics->SetRow(renderedCellAsFrameworkElement.Get(), rowNumber));
 
                 ComPtr<IPanel> xamlGridAsPanel;
-                xamlGrid.As(&xamlGridAsPanel);
+                RETURN_IF_FAILED(xamlGrid.As(&xamlGridAsPanel));
 
                 XamlHelpers::AppendXamlElementToPanel(renderedCellAsFrameworkElement.Get(), xamlGridAsPanel.Get());
 

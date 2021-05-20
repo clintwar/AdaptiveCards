@@ -175,14 +175,15 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(_In_ HSTRING /*adaptiveJson*/,
                                                                    _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
+        //BECKYTODO - Call Idl
+        //RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
         ComPtr<IAdaptiveCard> parsedCard;
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
@@ -212,14 +213,6 @@ namespace AdaptiveCards::Rendering::Uwp
         HString adaptiveJsonAsHstring;
         RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, adaptiveJsonAsHstring.GetAddressOf()));
         return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring.Get(), result);
-    }
-
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                                   _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult** parseResult)
-    {
-        ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(MakeAndInitialize<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
-        return adaptiveCardStatics->FromJsonString(adaptiveJson, parseResult);
     }
 
     IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig() { return m_hostConfig.Get(); }

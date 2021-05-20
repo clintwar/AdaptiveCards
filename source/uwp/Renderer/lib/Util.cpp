@@ -823,11 +823,11 @@ HRESULT SharedWarningsToAdaptiveWarnings(
         HString warningMessage;
         RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode =
-            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode>(sharedWarning->GetStatusCode());
+        //ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode =
+        //    static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode>(sharedWarning->GetStatusCode());
 
         ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning> adaptiveWarning;
-        //BECKYTODO
+        //BECKYTODO - Make
         //RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
 
         RETURN_IF_FAILED(adaptiveWarnings->Append(adaptiveWarning.Get()));
@@ -962,8 +962,8 @@ AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards:
     }
 }
 
-HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* textElement,
-                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** copiedTextElement)
+HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* /*textElement*/,
+                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** /*copiedTextElement*/)
 {
     //ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveTextElement> localCopiedTextElement;
     //BECKYTOOD - Make
@@ -998,61 +998,5 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveText
     //RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
 
     //RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
-    return S_OK;
-}
-
-HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
-{
-    // Look up the well known action parser registration to see if we've got a custom action registration to pass
-    std::shared_ptr<ActionElementParser> sharedActionParser =
-        sharedActionParserRegistration->GetParser(c_upwActionParserRegistration);
-
-    if (sharedActionParser != nullptr)
-    {
-        // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
-        // IAdaptiveActionParserRegistration
-        std::shared_ptr<ActionElementParserWrapper> parserWrapper =
-            std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
-
-        std::shared_ptr<SharedModelActionParser> sharedModelParser =
-            std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
-
-        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveActionParserRegistration));
-    }
-    else
-    {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
-    }
-
-    return S_OK;
-}
-
-HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
-    const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
-{
-    // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
-    std::shared_ptr<BaseCardElementParser> sharedElementParser =
-        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
-
-    if (sharedElementParser != nullptr)
-    {
-        // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
-        // IAdaptiveElementParserRegistration
-        std::shared_ptr<BaseCardElementParserWrapper> parserWrapper =
-            std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
-
-        std::shared_ptr<SharedModelElementParser> sharedModelParser =
-            std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
-
-        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveElementParserRegistration));
-    }
-    else
-    {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration>(adaptiveElementParserRegistration));
-    }
-
     return S_OK;
 }

@@ -251,7 +251,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::ElementType actionType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
         RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
 
         switch (actionType)
@@ -368,7 +368,7 @@ namespace AdaptiveCards::Rendering::Uwp
         m_originatingHostConfig = value;
     }
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
+    HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* /*actionSet*/,
                                                     _In_ IAdaptiveShowCardAction* showCardAction,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
@@ -386,7 +386,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
+    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* /*adaptiveCard*/,
                                                     ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
@@ -439,7 +439,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_inputs->LinkSubmitActionToCard(action, renderArgs);
     }
 
-    InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card)
+    InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* /*card*/)
     {
         //BECKYTODO
         //ComPtr<AdaptiveCard> cardImpl = PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveCard>(card);

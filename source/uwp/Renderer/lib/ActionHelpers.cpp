@@ -133,7 +133,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+            //BECKYTODO - Make
+            //THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
             THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Center));
@@ -556,7 +557,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
 
             ComPtr<IAdaptiveImage> adaptiveImage;
-            THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+            //BECKYTODO - Make
+            //THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 

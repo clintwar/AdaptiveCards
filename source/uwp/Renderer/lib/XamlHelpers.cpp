@@ -300,7 +300,8 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         HString url;
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+        //BECKYTODO - Make
+        //THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
         THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
         THROW_IF_FAILED(adaptiveImage->put_Url(url.Get()));
 

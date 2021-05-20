@@ -51,8 +51,6 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value);
 
     private:
-        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult** adaptiveCard);
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);

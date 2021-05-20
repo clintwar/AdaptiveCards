@@ -8,8 +8,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveColumnRenderer
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser>
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
     {
         AdaptiveRuntime(AdaptiveColumnRenderer);
 
@@ -20,12 +19,6 @@ namespace AdaptiveCards::Rendering::Uwp
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
-
-        IFACEMETHODIMP FromJson(ABI::Windows::Data::Json::IJsonObject*,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-                                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept override;
     };
 
     ActivatableClass(AdaptiveColumnRenderer);

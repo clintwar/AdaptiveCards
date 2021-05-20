@@ -105,7 +105,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return (errors->Append(error.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode /*statusCode*/, _In_ HSTRING /*message*/)
     {
         ComPtr<IAdaptiveWarning> warning;
         //BECKYTODO

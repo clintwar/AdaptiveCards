@@ -11,6 +11,7 @@
 using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
+// using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -41,6 +42,15 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        HAlignment tableHorizontalAlignment;
+        RETURN_IF_FAILED(adaptiveTable->get_HorizontalCellContentAlignment(&tableHorizontalAlignment));
+
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment tableVerticalAlignment;
+        RETURN_IF_FAILED(adaptiveTable->get_VerticalCellContentAlignment(&tableVerticalAlignment));
+
+        boolean showGridLines;
+        RETURN_IF_FAILED(adaptiveTable->get_ShowGridLines(&showGridLines));
 
         // Create the column definitions
         ComPtr<IVector<AdaptiveTableColumnDefinition*>> columns;
@@ -75,6 +85,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
             RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
 
+            HAlignment rowHorizontalAlignment;
+            RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
+
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment rowVerticalAlignment;
+            RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalAlignment));
+
             // Create the cells
             ComPtr<IVector<AdaptiveTableCell*>> cells;
             RETURN_IF_FAILED(row->get_Cells(&cells));
@@ -97,16 +113,53 @@ namespace AdaptiveCards::Rendering::Uwp
                 ComPtr<IUIElement> renderedCell;
                 RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &renderedCell));
 
-                ComPtr<IFrameworkElement> renderedCellAsFrameworkElement;
-                RETURN_IF_FAILED(renderedCell.As(&renderedCellAsFrameworkElement));
+                ComPtr<IFrameworkElement> cellFrameworkElement;
 
-                RETURN_IF_FAILED(gridStatics->SetColumn(renderedCellAsFrameworkElement.Get(), cellNumber));
-                RETURN_IF_FAILED(gridStatics->SetRow(renderedCellAsFrameworkElement.Get(), rowNumber));
+                if (showGridLines)
+                {
+                    // If we're showing grid lines put the cell in a border
+                    ComPtr<IBorder> cellBorder =
+                        XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
+                    ComPtr<IAdaptiveHostConfig> hostConfig;
+                    RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+                    ABI::Windows::UI::Color attentionColor;
+                    RETURN_IF_FAILED(GetColorFromAdaptiveColor(
+                        hostConfig.Get(), ForegroundColor_Default, ContainerStyle_Default, false, false, &attentionColor));
+
+                    RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+
+                    // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
+                    // rows respectively in order to avoid double-thickness borders
+                    Thickness borderThickness = {0, 0, 1, 1};
+                    if (cellNumber == 0)
+                    {
+                        borderThickness.Left = 1;
+                    }
+                    if (rowNumber == 0)
+                    {
+                        borderThickness.Top = 1;
+                    }
+
+                    cellBorder->put_BorderThickness(borderThickness);
+
+                    cellBorder->put_Child(renderedCell.Get());
+
+                    cellBorder.As(&cellFrameworkElement);
+                }
+                else
+                {
+                    RETURN_IF_FAILED(renderedCell.As(&cellFrameworkElement));
+                }
+
+                RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), cellNumber));
+                RETURN_IF_FAILED(gridStatics->SetRow(cellFrameworkElement.Get(), rowNumber));
 
                 ComPtr<IPanel> xamlGridAsPanel;
                 RETURN_IF_FAILED(xamlGrid.As(&xamlGridAsPanel));
 
-                XamlHelpers::AppendXamlElementToPanel(renderedCellAsFrameworkElement.Get(), xamlGridAsPanel.Get());
+                XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement.Get(), xamlGridAsPanel.Get());
 
                 cellNumber++;
                 return S_OK;

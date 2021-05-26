@@ -11,7 +11,6 @@
 using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
-// using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;

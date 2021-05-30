@@ -42,10 +42,10 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
-        HAlignment tableHorizontalAlignment;
+        ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> tableHorizontalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_HorizontalCellContentAlignment(&tableHorizontalAlignment));
 
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment tableVerticalAlignment;
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> tableVerticalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_VerticalCellContentAlignment(&tableVerticalAlignment));
 
         boolean showGridLines;
@@ -84,10 +84,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
             RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
 
-            HAlignment rowHorizontalAlignment;
+            ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
             RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
 
-            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment rowVerticalAlignment;
+            ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> rowVerticalAlignment;
             RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalAlignment));
 
             // Create the cells
@@ -105,6 +105,12 @@ namespace AdaptiveCards::Rendering::Uwp
                 RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));
 
                 ComPtr<IAdaptiveTableCell> tableCell(cell);
+                ComPtr<IAdaptiveContainer> tableCellAsContainer;
+                tableCell.As(&tableCellAsContainer);
+
+                ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> cellVerticalAlignment;
+                RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
+
                 ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
                 RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));
 

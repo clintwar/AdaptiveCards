@@ -7,7 +7,7 @@
 			"type": "Table",
 			"gridStyle": "accent",
 			"firstRowAsHeaders": true,
-			"showGridLines": true,
+			"showGridLines": false,
 			"columns": [
 				{
 					"width": 1
@@ -25,6 +25,7 @@
 					"cells": [
 						{
 							"type": "TableCell",
+							"style": "good",
 							"items": [
 								{
 									"type": "TextBlock",

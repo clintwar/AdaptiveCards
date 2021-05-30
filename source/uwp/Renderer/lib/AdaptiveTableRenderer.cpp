@@ -120,14 +120,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 ComPtr<IFrameworkElement> cellFrameworkElement;
 
+                ComPtr<IAdaptiveHostConfig> hostConfig;
+                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
                 if (showGridLines)
                 {
                     // If we're showing grid lines put the cell in a border
                     ComPtr<IBorder> cellBorder =
                         XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-
-                    ComPtr<IAdaptiveHostConfig> hostConfig;
-                    RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
                     ABI::Windows::UI::Color attentionColor;
                     RETURN_IF_FAILED(GetColorFromAdaptiveColor(
@@ -136,7 +136,7 @@ namespace AdaptiveCards::Rendering::Uwp
                     RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
 
                     // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
-                    // rows respectively in order to avoid double-thickness borders
+                    // cells respectively in order to avoid double-thickness borders
                     Thickness borderThickness = {0, 0, 1, 1};
                     if (cellNumber == 0)
                     {
@@ -155,7 +155,29 @@ namespace AdaptiveCards::Rendering::Uwp
                 }
                 else
                 {
+                    // If we're not showing gridlines, use the cell as-is as the frameworkElement, and add the cell spacing
                     RETURN_IF_FAILED(renderedCell.As(&cellFrameworkElement));
+
+                    ComPtr<IAdaptiveTableConfig> tableConfig;
+                    RETURN_IF_FAILED(hostConfig->get_Table(&tableConfig));
+
+                    UINT32 cellSpacing;
+                    RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
+                    DOUBLE cellSpacingDouble = static_cast<DOUBLE>(cellSpacing);
+
+                    // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
+                    // or leftmost cells to avoid creating margin outside the table.
+                    Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+                    if (cellNumber == 0)
+                    {
+                        marginThickness.Left = 0;
+                    }
+                    if (rowNumber == 0)
+                    {
+                        marginThickness.Top = 0;
+                    }
+
+                    RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
                 }
 
                 RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), cellNumber));

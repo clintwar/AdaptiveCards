@@ -20,6 +20,7 @@
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
+#include "AdaptiveTableConfig.h"
 #include "AdaptiveTextBlockConfig.h"
 #include "AdaptiveTextStylesConfig.h"
 
@@ -98,6 +99,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextBlockConfig>(m_textBlock.GetAddressOf(), sharedHostConfig.GetTextBlock()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStylesConfig>(m_textStyles.GetAddressOf(), sharedHostConfig.GetTextStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTableConfig>(m_table.GetAddressOf(), sharedHostConfig.GetTable()));
 
         return S_OK;
     }

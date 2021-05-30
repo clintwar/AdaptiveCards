@@ -34,4 +34,15 @@ namespace AdaptiveCards::Rendering::Uwp
         m_headingStyle = headingStyle;
         return S_OK;
     }
+
+    HRESULT AdaptiveTextStylesConfig::get_ColumnHeader(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** columnHeaderStyle)
+    {
+        return m_columnHeaderStyle.CopyTo(columnHeaderStyle);
+    }
+
+    IFACEMETHODIMP AdaptiveTextStylesConfig::put_ColumnHeader(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* columnHeaderStyle)
+    {
+        m_columnHeaderStyle = columnHeaderStyle;
+        return S_OK;
+    }
 }

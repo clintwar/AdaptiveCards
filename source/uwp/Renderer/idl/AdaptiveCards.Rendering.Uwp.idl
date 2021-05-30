@@ -244,6 +244,7 @@ namespace AdaptiveCards
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextStyle {
                 Default = 0,
                 Heading,
+                ColumnHeader
             } TextStyle;
 
             declare
@@ -805,6 +806,7 @@ namespace AdaptiveCards
                 AdaptiveTextStylesConfig();
 
                 AdaptiveTextStyleConfig Heading;
+                AdaptiveTextStyleConfig ColumnHeader;
             };
 
             runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
@@ -1186,6 +1188,7 @@ namespace AdaptiveCards
                 AdaptiveRenderArgs();
 
                 ContainerStyle ContainerStyle;
+                Windows.Foundation.IReference<TextStyle> TextStyle;
                 IInspectable ParentElement;
                 Boolean IsInShowCard;
                 Boolean AllowAboveTitleIconPlacement;

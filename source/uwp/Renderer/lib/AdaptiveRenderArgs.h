@@ -32,6 +32,9 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* value) override;
         IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle value) override;
 
+        IFACEMETHODIMP get_TextStyle(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** value) override;
+        IFACEMETHODIMP put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* value) override;
+
         IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value) override;
         IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value) override;
 
@@ -41,14 +44,15 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_AllowAboveTitleIconPlacement(_Out_ boolean* value) override;
         IFACEMETHODIMP put_AllowAboveTitleIconPlacement(boolean value) override;
 
-        IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback);
-        IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback);
+        IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback) override;
+        IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback) override;
 
         IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** value) override;
         IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value) override;
 
     private:
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_containerStyle;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> m_textStyle;
         Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
         boolean m_isInShowCard;
         boolean m_allowAboveTitleIconPlacement;

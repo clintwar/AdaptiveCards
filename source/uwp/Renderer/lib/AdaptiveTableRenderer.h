@@ -26,6 +26,23 @@ namespace AdaptiveCards::Rendering::Uwp
                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept override;
+
+    private:
+        HRESULT RenderCell(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell* cell,
+                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                           boolean showGridLines,
+                           UINT32 rowNumber,
+                           UINT32 columnNumber,
+                           _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** renderedCell);
+
+        HRESULT RenderRow(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableRow* row,
+                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                          boolean firstRowAsHeaders,
+                          boolean showGridLines,
+                          UINT32 rowNumber,
+                          _In_ ABI::Windows::UI::Xaml::Controls::IGrid* xamlGrid);
     };
 
     ActivatableClass(AdaptiveTableRenderer);

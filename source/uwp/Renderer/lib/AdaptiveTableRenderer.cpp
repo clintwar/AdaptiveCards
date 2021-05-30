@@ -26,6 +26,173 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
+    HRESULT AdaptiveTableRenderer::RenderCell(_In_ IAdaptiveTableCell* cell,
+                                              _In_ IAdaptiveRenderContext* renderContext,
+                                              _In_ IAdaptiveRenderArgs* renderArgs,
+                                              boolean showGridLines,
+                                              UINT32 rowNumber,
+                                              UINT32 columnNumber,
+                                              _COM_Outptr_ IFrameworkElement** renderedCell)
+    {
+        // Render the cell as a container
+        ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
+        renderContext->get_ElementRenderers(&rendererRegistration);
+
+        ComPtr<IAdaptiveElementRenderer> containerRenderer;
+        HString containerTypeString;
+        RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
+        RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));
+
+        ComPtr<IAdaptiveTableCell> tableCell(cell);
+        ComPtr<IAdaptiveContainer> tableCellAsContainer;
+        tableCell.As(&tableCellAsContainer);
+
+        ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
+        RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));
+
+        ComPtr<IUIElement> cellRenderedAsContainer;
+        RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &cellRenderedAsContainer));
+
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> cellVerticalAlignment;
+        RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
+
+        // Handle Grid Lines or Cell Spacing
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IFrameworkElement> cellFrameworkElement;
+        if (showGridLines)
+        {
+            // If we're showing grid lines put the cell in a border
+            ComPtr<IBorder> cellBorder =
+                XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
+            ABI::Windows::UI::Color attentionColor;
+            RETURN_IF_FAILED(
+                GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Default, ContainerStyle_Default, false, false, &attentionColor));
+
+            RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+
+            // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
+            // cells respectively in order to avoid double-thickness borders
+            Thickness borderThickness = {0, 0, 1, 1};
+            if (columnNumber == 0)
+            {
+                borderThickness.Left = 1;
+            }
+            if (rowNumber == 0)
+            {
+                borderThickness.Top = 1;
+            }
+
+            cellBorder->put_BorderThickness(borderThickness);
+
+            cellBorder->put_Child(cellRenderedAsContainer.Get());
+
+            cellBorder.As(&cellFrameworkElement);
+        }
+        else
+        {
+            // If we're not showing gridlines, use the cell as-is as the frameworkElement, and add the cell spacing
+            RETURN_IF_FAILED(cellRenderedAsContainer.As(&cellFrameworkElement));
+
+            ComPtr<IAdaptiveTableConfig> tableConfig;
+            RETURN_IF_FAILED(hostConfig->get_Table(&tableConfig));
+
+            UINT32 cellSpacing;
+            RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
+            DOUBLE cellSpacingDouble = static_cast<DOUBLE>(cellSpacing);
+
+            // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
+            // or leftmost cells to avoid creating margin outside the table.
+            Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
+            if (columnNumber == 0)
+            {
+                marginThickness.Left = 0;
+            }
+            if (rowNumber == 0)
+            {
+                marginThickness.Top = 0;
+            }
+
+            RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
+        }
+
+        RETURN_IF_FAILED(cellFrameworkElement.CopyTo(renderedCell));
+
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTableRenderer::RenderRow(_In_ IAdaptiveTableRow* row,
+                                             _In_ IAdaptiveRenderContext* renderContext,
+                                             _In_ IAdaptiveRenderArgs* renderArgs,
+                                             boolean firstRowAsHeaders,
+                                             boolean showGridLines,
+                                             UINT32 rowNumber,
+                                             _In_ IGrid* xamlGrid)
+    {
+        ComPtr<IRowDefinition> xamlRowDefinition =
+            XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
+
+        ComPtr<IVector<RowDefinition*>> xamlRowDefinitions;
+        RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&xamlRowDefinitions));
+        RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
+
+        // Set the column header style if this is the first row and firstRowAsHeaders is set
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> argsTextStyle;
+        if (rowNumber == 0 && firstRowAsHeaders)
+        {
+            // Save the old text style
+            RETURN_IF_FAILED(renderArgs->get_TextStyle(&argsTextStyle));
+
+            // Set the text style to TextStyle::ColumnHeader
+            renderArgs->put_TextStyle(winrt::box_value(winrt::AdaptiveCards::Rendering::Uwp::TextStyle::ColumnHeader)
+                                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>>()
+                                          .get());
+        }
+
+        ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
+        RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
+
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> rowVerticalAlignment;
+        RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalAlignment));
+
+        ComPtr<IGridStatics> gridStatics;
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        // Create the cells
+        ComPtr<IVector<AdaptiveTableCell*>> cells;
+        RETURN_IF_FAILED(row->get_Cells(&cells));
+
+        UINT columnNumber = 0;
+        IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* cell) {
+            // Render the cell
+            ComPtr<IFrameworkElement> cellFrameworkElement;
+            RETURN_IF_FAILED(RenderCell(cell, renderContext, renderArgs, showGridLines, rowNumber, columnNumber, &cellFrameworkElement));
+
+            // Set the row and column of the cell
+            RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), columnNumber));
+            RETURN_IF_FAILED(gridStatics->SetRow(cellFrameworkElement.Get(), rowNumber));
+
+            // Add the cell to the panel
+            ComPtr<IGrid> localXamlGrid(xamlGrid);
+            ComPtr<IPanel> xamlGridAsPanel;
+            RETURN_IF_FAILED(localXamlGrid.As(&xamlGridAsPanel));
+            XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement.Get(), xamlGridAsPanel.Get());
+
+            columnNumber++;
+            return S_OK;
+        });
+
+        // If we changed the text style for row headers, change it back
+        if (rowNumber == 0 && firstRowAsHeaders)
+        {
+            renderArgs->put_TextStyle(argsTextStyle.Get());
+        }
+
+        return S_OK;
+    }
+
     HRESULT AdaptiveTableRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                           _In_ IAdaptiveRenderContext* renderContext,
                                           _In_ IAdaptiveRenderArgs* renderArgs,
@@ -39,8 +206,6 @@ namespace AdaptiveCards::Rendering::Uwp
         // Create a grid to represent the table
         ComPtr<IGrid> xamlGrid =
             XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
-        ComPtr<IGridStatics> gridStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
         ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> tableHorizontalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_HorizontalCellContentAlignment(&tableHorizontalAlignment));
@@ -74,124 +239,13 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<AdaptiveTableRow*>> rows;
         RETURN_IF_FAILED(adaptiveTable->get_Rows(&rows));
 
-        ComPtr<IVector<RowDefinition*>> xamlRowDefinitions;
-        RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&xamlRowDefinitions));
+        boolean firstRowAsHeaders;
+        RETURN_IF_FAILED(adaptiveTable->get_FirstRowAsHeaders(&firstRowAsHeaders));
 
         UINT rowNumber = 0;
         IterateOverVectorWithFailure<AdaptiveTableRow, IAdaptiveTableRow>(rows.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableRow* row) {
-            ComPtr<IRowDefinition> xamlRowDefinition = XamlHelpers::CreateXamlClass<IRowDefinition>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
-
-            RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
-
-            ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
-            RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
-
-            ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> rowVerticalAlignment;
-            RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalAlignment));
-
-            // Create the cells
-            ComPtr<IVector<AdaptiveTableCell*>> cells;
-            RETURN_IF_FAILED(row->get_Cells(&cells));
-
-            UINT cellNumber = 0;
-            IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* cell) {
-                ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
-                renderContext->get_ElementRenderers(&rendererRegistration);
-
-                ComPtr<IAdaptiveElementRenderer> containerRenderer;
-                HString containerTypeString;
-                RETURN_IF_FAILED(containerTypeString.Set(L"Container"));
-                RETURN_IF_FAILED(rendererRegistration->Get(containerTypeString.Get(), &containerRenderer));
-
-                ComPtr<IAdaptiveTableCell> tableCell(cell);
-                ComPtr<IAdaptiveContainer> tableCellAsContainer;
-                tableCell.As(&tableCellAsContainer);
-
-                ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> cellVerticalAlignment;
-                RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
-
-                ComPtr<IAdaptiveCardElement> tableCellAsCardElement;
-                RETURN_IF_FAILED(tableCell.As(&tableCellAsCardElement));
-
-                // Render the cell as a container
-                ComPtr<IUIElement> renderedCell;
-                RETURN_IF_FAILED(containerRenderer->Render(tableCellAsCardElement.Get(), renderContext, renderArgs, &renderedCell));
-
-                ComPtr<IFrameworkElement> cellFrameworkElement;
-
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-                if (showGridLines)
-                {
-                    // If we're showing grid lines put the cell in a border
-                    ComPtr<IBorder> cellBorder =
-                        XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-
-                    ABI::Windows::UI::Color attentionColor;
-                    RETURN_IF_FAILED(GetColorFromAdaptiveColor(
-                        hostConfig.Get(), ForegroundColor_Default, ContainerStyle_Default, false, false, &attentionColor));
-
-                    RETURN_IF_FAILED(cellBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
-
-                    // Create a border around the cell. Only set the top or left borders if we're in the top or leftmost
-                    // cells respectively in order to avoid double-thickness borders
-                    Thickness borderThickness = {0, 0, 1, 1};
-                    if (cellNumber == 0)
-                    {
-                        borderThickness.Left = 1;
-                    }
-                    if (rowNumber == 0)
-                    {
-                        borderThickness.Top = 1;
-                    }
-
-                    cellBorder->put_BorderThickness(borderThickness);
-
-                    cellBorder->put_Child(renderedCell.Get());
-
-                    cellBorder.As(&cellFrameworkElement);
-                }
-                else
-                {
-                    // If we're not showing gridlines, use the cell as-is as the frameworkElement, and add the cell spacing
-                    RETURN_IF_FAILED(renderedCell.As(&cellFrameworkElement));
-
-                    ComPtr<IAdaptiveTableConfig> tableConfig;
-                    RETURN_IF_FAILED(hostConfig->get_Table(&tableConfig));
-
-                    UINT32 cellSpacing;
-                    RETURN_IF_FAILED(tableConfig->get_CellSpacing(&cellSpacing));
-                    DOUBLE cellSpacingDouble = static_cast<DOUBLE>(cellSpacing);
-
-                    // Set left and top margin for each cell (to avoid double margins). Don't set the margin on topmost
-                    // or leftmost cells to avoid creating margin outside the table.
-                    Thickness marginThickness = {cellSpacingDouble, cellSpacingDouble, 0, 0};
-                    if (cellNumber == 0)
-                    {
-                        marginThickness.Left = 0;
-                    }
-                    if (rowNumber == 0)
-                    {
-                        marginThickness.Top = 0;
-                    }
-
-                    RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
-                }
-
-                RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), cellNumber));
-                RETURN_IF_FAILED(gridStatics->SetRow(cellFrameworkElement.Get(), rowNumber));
-
-                ComPtr<IPanel> xamlGridAsPanel;
-                RETURN_IF_FAILED(xamlGrid.As(&xamlGridAsPanel));
-
-                XamlHelpers::AppendXamlElementToPanel(cellFrameworkElement.Get(), xamlGridAsPanel.Get());
-
-                cellNumber++;
-                return S_OK;
-            });
-
+            RETURN_IF_FAILED(
+                RenderRow(row, renderContext, renderArgs, firstRowAsHeaders, showGridLines, rowNumber, xamlGrid.Get()));
             rowNumber++;
             return S_OK;
         });

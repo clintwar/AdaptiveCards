@@ -139,6 +139,7 @@
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlockConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableConfig.h" />
     <ClInclude Include="lib\AdaptiveTextBlockConfig.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />

@@ -241,11 +241,7 @@ namespace AdaptiveCards
                 None,
             } AssociatedInputs;
 
-            [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextStyle {
-                Default = 0,
-                Heading,
-                ColumnHeader
-            } TextStyle;
+            [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextStyle { Default = 0, Heading, ColumnHeader } TextStyle;
 
             declare
             {
@@ -954,6 +950,13 @@ namespace AdaptiveCards
                 UInt32 HeadingLevel;
             };
 
+            runtimeclass AdaptiveTableConfig
+            {
+                AdaptiveTableConfig();
+
+                UInt32 CellSpacing;
+            };
+
             runtimeclass AdaptiveHostConfig
             {
                 AdaptiveHostConfig();
@@ -977,6 +980,7 @@ namespace AdaptiveCards
                 AdaptiveInputsConfig Inputs;
                 AdaptiveTextBlockConfig TextBlock;
                 AdaptiveTextStylesConfig TextStyles;
+                AdaptiveTableConfig Table;
 
                 static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
                 static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);

@@ -279,6 +279,17 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveHostConfig::get_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig** tableConfig)
+    {
+        return m_table.CopyTo(tableConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig* tableConfig)
+    {
+        m_table = tableConfig;
+        return S_OK;
+    }
+
     HRESULT AdaptiveHostConfig::get_FontTypes(_COM_Outptr_ IAdaptiveFontTypesDefinition** value)
     {
         return m_fontTypes.CopyTo(value);

@@ -21,6 +21,7 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveTextStylesConfig::RuntimeClassInitialize(TextStylesConfig textStylesConfig) noexcept
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStyleConfig>(m_headingStyle.GetAddressOf(), textStylesConfig.heading));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStyleConfig>(m_columnHeaderStyle.GetAddressOf(), textStylesConfig.columnHeader));
         return S_OK;
     }
 

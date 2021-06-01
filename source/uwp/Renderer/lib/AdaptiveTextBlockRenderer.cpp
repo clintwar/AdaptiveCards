@@ -72,8 +72,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (textStyleRef == nullptr)
         {
-            // If there's no style on the text block, check the renderArgs to see if we inherit one from our parent
-            RETURN_IF_FAILED(renderArgs->get_TextStyle(&textStyleRef));
+            // If there's no style on the text block, check the renderContext to see if we inherit one from our parent
+            RETURN_IF_FAILED(renderContext->get_TextStyle(&textStyleRef));
         }
 
         if (textStyleRef != nullptr)

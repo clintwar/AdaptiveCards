@@ -327,13 +327,20 @@ namespace AdaptiveCards::Rendering::Uwp
             }
         }
 
-        ComPtr<IReference<HAlignment>> adaptivehorizontalAlignmentReference;
-        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptivehorizontalAlignmentReference));
+        ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
+        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+
+        // If the image doesn't have horizontal alignment set, check the render args for a parent value
+        if (adaptiveHorizontalAlignmentReference == nullptr)
+        {
+            RETURN_IF_FAILED(renderContext->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+        }
 
         HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left;
-        if (adaptivehorizontalAlignmentReference != nullptr)
+        if (adaptiveHorizontalAlignmentReference != nullptr)
         {
-            adaptivehorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment);
+            RETURN_IF_FAILED(renderContext->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+            RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
         }
 
         switch (adaptiveHorizontalAlignment)

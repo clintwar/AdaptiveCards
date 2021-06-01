@@ -64,17 +64,6 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveRenderArgs::get_TextStyle(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** textStyle)
-    {
-        return m_textStyle.CopyTo(textStyle);
-    }
-
-    HRESULT AdaptiveRenderArgs::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* textStyle)
-    {
-        m_textStyle = textStyle;
-        return S_OK;
-    }
 
     HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ IInspectable** value)
     {

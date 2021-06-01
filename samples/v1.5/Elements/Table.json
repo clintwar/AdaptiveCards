@@ -8,6 +8,8 @@
 			"gridStyle": "accent",
 			"firstRowAsHeaders": true,
 			"showGridLines": false,
+			"horizontalCellContentAlignment": "Right",
+			"verticalCellContentAlignment": "Center",
 			"columns": [
 				{
 					"width": 1

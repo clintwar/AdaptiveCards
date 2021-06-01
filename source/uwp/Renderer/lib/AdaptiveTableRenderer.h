@@ -31,14 +31,17 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RenderCell(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell* cell,
                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                           _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment,
                            boolean showGridLines,
                            UINT32 rowNumber,
                            UINT32 columnNumber,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** renderedCell);
 
         HRESULT RenderRow(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableRow* row,
+                          _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableColumnDefinition*>* columns,
                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                          _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment,
                           boolean firstRowAsHeaders,
                           boolean showGridLines,
                           UINT32 rowNumber,

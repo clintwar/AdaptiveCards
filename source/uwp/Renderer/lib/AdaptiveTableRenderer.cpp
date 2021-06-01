@@ -26,13 +26,15 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTableRenderer::RenderCell(_In_ IAdaptiveTableCell* cell,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              boolean showGridLines,
-                                              UINT32 rowNumber,
-                                              UINT32 columnNumber,
-                                              _COM_Outptr_ IFrameworkElement** renderedCell)
+    HRESULT AdaptiveTableRenderer::RenderCell(
+        _In_ IAdaptiveTableCell* cell,
+        _In_ IAdaptiveRenderContext* renderContext,
+        _In_ IAdaptiveRenderArgs* renderArgs,
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment,
+        boolean showGridLines,
+        UINT32 rowNumber,
+        UINT32 columnNumber,
+        _COM_Outptr_ IFrameworkElement** renderedCell)
     {
         // Render the cell as a container
         ComPtr<IAdaptiveElementRendererRegistration> rendererRegistration;
@@ -55,6 +57,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> cellVerticalAlignment;
         RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
+
+        // If the cell doesn't have a vertical content alignment, pass in the one from the parent
+        if (cellVerticalAlignment == nullptr)
+        {
+            tableCellAsContainer->put_VerticalContentAlignment(verticalContentAlignment);
+        }
 
         // Handle Grid Lines or Cell Spacing
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -118,18 +126,27 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(cellFrameworkElement->put_Margin(marginThickness));
         }
 
+        // If the cell didn't have a vertical content alignment when we started, set it back to null
+        if (cellVerticalAlignment == nullptr)
+        {
+            tableCellAsContainer->put_VerticalContentAlignment(nullptr);
+        }
+
         RETURN_IF_FAILED(cellFrameworkElement.CopyTo(renderedCell));
 
         return S_OK;
     }
 
-    HRESULT AdaptiveTableRenderer::RenderRow(_In_ IAdaptiveTableRow* row,
-                                             _In_ IAdaptiveRenderContext* renderContext,
-                                             _In_ IAdaptiveRenderArgs* renderArgs,
-                                             boolean firstRowAsHeaders,
-                                             boolean showGridLines,
-                                             UINT32 rowNumber,
-                                             _In_ IGrid* xamlGrid)
+    HRESULT AdaptiveTableRenderer::RenderRow(
+        _In_ IAdaptiveTableRow* row,
+        _In_ IVector<AdaptiveTableColumnDefinition*>* columns,
+        _In_ IAdaptiveRenderContext* renderContext,
+        _In_ IAdaptiveRenderArgs* renderArgs,
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment,
+        boolean firstRowAsHeaders,
+        boolean showGridLines,
+        UINT32 rowNumber,
+        _In_ IGrid* xamlGrid)
     {
         ComPtr<IRowDefinition> xamlRowDefinition =
             XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
@@ -138,24 +155,35 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(xamlGrid->get_RowDefinitions(&xamlRowDefinitions));
         RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
 
+        // Save the current text style
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> contextTextStyle;
+        RETURN_IF_FAILED(renderContext->get_TextStyle(&contextTextStyle));
+
         // Set the column header style if this is the first row and firstRowAsHeaders is set
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> argsTextStyle;
         if (rowNumber == 0 && firstRowAsHeaders)
         {
-            // Save the old text style
-            RETURN_IF_FAILED(renderArgs->get_TextStyle(&argsTextStyle));
-
             // Set the text style to TextStyle::ColumnHeader
-            renderArgs->put_TextStyle(winrt::box_value(winrt::AdaptiveCards::Rendering::Uwp::TextStyle::ColumnHeader)
-                                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>>()
-                                          .get());
+            renderContext->put_TextStyle(winrt::box_value(winrt::AdaptiveCards::Rendering::Uwp::TextStyle::ColumnHeader)
+                                             .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>>()
+                                             .get());
         }
 
+        // Save the current horizontal alignment
+        ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> contextHorizontalAlignment;
+        RETURN_IF_FAILED(renderContext->get_HorizontalAlignment(&contextHorizontalAlignment));
+
+        // Get the horizontal alignment for this row
         ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> rowHorizontalAlignment;
         RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
 
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> rowVerticalAlignment;
-        RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalAlignment));
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> rowVerticalContentAlignment;
+        RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalContentAlignment));
+
+        // Use the passed in vertical alignment unless the row has one to override it
+        if (rowVerticalContentAlignment == nullptr)
+        {
+            rowVerticalContentAlignment = verticalContentAlignment;
+        }
 
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
@@ -166,9 +194,30 @@ namespace AdaptiveCards::Rendering::Uwp
 
         UINT columnNumber = 0;
         IterateOverVectorWithFailure<AdaptiveTableCell, IAdaptiveTableCell>(cells.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableCell* cell) {
+            // Get the horizontal alignment from the column definition
+            ComPtr<IAdaptiveTableColumnDefinition> columnDefinition;
+            RETURN_IF_FAILED(columns->GetAt(columnNumber, &columnDefinition));
+
+            ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> columnHorizontalAlignment;
+            RETURN_IF_FAILED(columnDefinition->get_HorizontalCellContentAlignment(&columnHorizontalAlignment));
+
+            if (rowHorizontalAlignment != nullptr)
+            {
+                RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(rowHorizontalAlignment.Get()));
+            }
+            else if (columnHorizontalAlignment != nullptr)
+            {
+                RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(columnHorizontalAlignment.Get()));
+            }
+            else
+            {
+                RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(contextHorizontalAlignment.Get()));
+            }
+
             // Render the cell
             ComPtr<IFrameworkElement> cellFrameworkElement;
-            RETURN_IF_FAILED(RenderCell(cell, renderContext, renderArgs, showGridLines, rowNumber, columnNumber, &cellFrameworkElement));
+            RETURN_IF_FAILED(
+                RenderCell(cell, renderContext, renderArgs, rowVerticalContentAlignment.Get(), showGridLines, rowNumber, columnNumber, &cellFrameworkElement));
 
             // Set the row and column of the cell
             RETURN_IF_FAILED(gridStatics->SetColumn(cellFrameworkElement.Get(), columnNumber));
@@ -184,11 +233,9 @@ namespace AdaptiveCards::Rendering::Uwp
             return S_OK;
         });
 
-        // If we changed the text style for row headers, change it back
-        if (rowNumber == 0 && firstRowAsHeaders)
-        {
-            renderArgs->put_TextStyle(argsTextStyle.Get());
-        }
+        // Reset the render context to its original values
+        RETURN_IF_FAILED(renderContext->put_TextStyle(contextTextStyle.Get()));
+        RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(contextHorizontalAlignment.Get()));
 
         return S_OK;
     }
@@ -209,6 +256,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
         ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> tableHorizontalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_HorizontalCellContentAlignment(&tableHorizontalAlignment));
+
+        // Save the current horizontal alignment
+        ComPtr<ABI::Windows::Foundation::IReference<HAlignment>> contextHorizontalAlignment;
+        RETURN_IF_FAILED(renderContext->get_HorizontalAlignment(&contextHorizontalAlignment));
+        if (tableHorizontalAlignment != nullptr)
+        {
+            RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(tableHorizontalAlignment.Get()));
+        }
 
         ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> tableVerticalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_VerticalCellContentAlignment(&tableVerticalAlignment));
@@ -244,11 +299,22 @@ namespace AdaptiveCards::Rendering::Uwp
 
         UINT rowNumber = 0;
         IterateOverVectorWithFailure<AdaptiveTableRow, IAdaptiveTableRow>(rows.Get(), false /*BECKYTODO*/, [&](IAdaptiveTableRow* row) {
-            RETURN_IF_FAILED(
-                RenderRow(row, renderContext, renderArgs, firstRowAsHeaders, showGridLines, rowNumber, xamlGrid.Get()));
+            RETURN_IF_FAILED(RenderRow(row,
+                                       columns.Get(),
+                                       renderContext,
+                                       renderArgs,
+                                       tableVerticalAlignment.Get(),
+                                       firstRowAsHeaders,
+                                       showGridLines,
+                                       rowNumber,
+                                       xamlGrid.Get()));
+
             rowNumber++;
             return S_OK;
         });
+
+        // Reset the render context to its original value
+        RETURN_IF_FAILED(renderContext->put_HorizontalAlignment(contextHorizontalAlignment.Get()));
 
         ComPtr<IUIElement> xamlGridAsUIElement;
         xamlGrid.As(&xamlGridAsUIElement);

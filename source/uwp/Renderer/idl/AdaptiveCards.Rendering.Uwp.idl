@@ -1190,9 +1190,7 @@ namespace AdaptiveCards
             runtimeclass AdaptiveRenderArgs
             {
                 AdaptiveRenderArgs();
-
                 ContainerStyle ContainerStyle;
-                Windows.Foundation.IReference<TextStyle> TextStyle;
                 IInspectable ParentElement;
                 Boolean IsInShowCard;
                 Boolean AllowAboveTitleIconPlacement;
@@ -1234,6 +1232,8 @@ namespace AdaptiveCards
                 Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
                 AdaptiveInputs UserInputs { get; };
                 Windows.Foundation.IReference<Boolean> Rtl;
+                Windows.Foundation.IReference<TextStyle> TextStyle;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
 
                 void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
                 void LinkSubmitActionToCard(IAdaptiveActionElement submitAction, AdaptiveRenderArgs renderArgs);
